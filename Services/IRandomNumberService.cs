@@ -1,0 +1,1 @@
+namespace RandomNumbersApi.Services{public interface IRandomNumberService{int[] GetTwoRandomNumbers(int minInclusive, int maxInclusive);}}
