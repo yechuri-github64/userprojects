@@ -1,0 +1,12 @@
+{
+  "profile": "",
+  "region": "us-east-1",
+  "configuration": "Release",
+  "function-runtime": "dotnet6",
+  "function-memory-size": 256,
+  "function-timeout": 30,
+  "function-handler": "Test_project_mainLambda::Test_project_mainLambda.Function::test_project_main",
+  "framework": "net6.0",
+  "function-name": "test_project_main",
+  "package-type": "Zip"
+}
