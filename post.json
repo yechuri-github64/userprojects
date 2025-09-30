@@ -1,0 +1,26 @@
+{
+  "queryparameters": "",
+  "headerparameters": "",
+  "input": {
+    "contentType": "application/json",
+    "body": {
+      "city": "string (required)",
+      "units": "string (optional, e.g., metric or imperial)",
+      "lang": "string (optional, e.g., en)"
+    }
+  },
+  "output": {
+    "contentType": "application/json",
+    "body": {
+      "city": "string",
+      "country": "string",
+      "temperature": "number",
+      "units": "string",
+      "condition": "string",
+      "humidity": "number",
+      "windSpeed": "number",
+      "windDirection": "string",
+      "timestamp": "string (ISO 8601)"
+    }
+  }
+}
