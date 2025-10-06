@@ -1,0 +1,48 @@
+micronaut:
+  application:
+    name: random-name-service
+  server:
+    port: 8080
+  http:
+    client:
+      read-timeout: 10s
+      connect-timeout: 5s
+
+# JDBC datasources
+datasources:
+  mysql:
+    url: jdbc:mysql://localhost:3306/appdb
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER:`user`}
+    password: ${MYSQL_PASSWORD:`pass`}
+    dialect: MYSQL
+  sqlserver:
+    url: jdbc:sqlserver://localhost:1433;databaseName=appdb;encrypt=false
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${MSSQL_USER:`user`}
+    password: ${MSSQL_PASSWORD:`pass`}
+    dialect: SQL_SERVER
+  oracle:
+    url: jdbc:oracle:thin:@localhost:1521/FREEPDB1
+    driverClassName: oracle.jdbc.OracleDriver
+    username: ${ORACLE_USER:`user`}
+    password: ${ORACLE_PASSWORD:`pass`}
+    dialect: ORACLE
+
+# External REST API configuration
+external:
+  api:
+    base-url: https://api.example.com
+    timeout: 5s
+
+# Salesforce configuration (REST API)
+salesforce:
+  api:
+    api-url: https://yourInstance.salesforce.com/services/data
+    api-version: v60.0
+  auth:
+    token-url: https://login.salesforce.com/services/oauth2/token
+    client-id: ${SF_CLIENT_ID:`YOUR_CLIENT_ID`}
+    client-secret: ${SF_CLIENT_SECRET:`YOUR_CLIENT_SECRET`}
+    username: ${SF_USERNAME:`YOUR_USERNAME`}
+    password: ${SF_PASSWORD_TOKEN:`YOUR_PASSWORD_SECURITY_TOKEN`}
