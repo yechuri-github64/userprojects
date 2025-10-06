@@ -32,8 +32,7 @@ application {
 }
 
 dependencies {
-    implementation(platform("io.micronaut:micronaut-bom:4.3.8"))
-
+    implementation(platform("io.micronaut.platform:micronaut-platform:4.3.8"))
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
