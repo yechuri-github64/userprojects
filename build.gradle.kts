@@ -15,6 +15,7 @@ java {
 }
 
 micronaut {
+    version.set("4.4.3")
     runtime("netty")
     processing {
         incremental(true)
