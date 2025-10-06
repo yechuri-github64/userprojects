@@ -1,0 +1,40 @@
+micronaut:
+  application:
+    name: random-name-api
+  server:
+    port: 8080
+
+# External REST API configuration
+external-api:
+  url: "https://api.example.com"
+
+# Salesforce configuration (example for REST integration / OAuth)
+salesforce:
+  url: "https://your-instance.salesforce.com"
+  client-id: "${SALESFORCE_CLIENT_ID:your-client-id}"
+  client-secret: "${SALESFORCE_CLIENT_SECRET:your-client-secret}"
+  token-url: "https://login.salesforce.com/services/oauth2/token"
+
+# Datasources: MySQL, SQL Server and Oracle. Credentials and URLs should be overridden via env vars.
+datasources:
+  mysql:
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:app_db}"
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:password}
+    driverClassName: com.mysql.cj.jdbc.Driver
+  sqlserver:
+    url: "jdbc:sqlserver://${MSSQL_HOST:localhost}:${MSSQL_PORT:1433};databaseName=${MSSQL_DB:app_db}"
+    username: ${MSSQL_USER:sa}
+    password: ${MSSQL_PASSWORD:password}
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  oracle:
+    url: "jdbc:oracle:thin:@${ORACLE_HOST:localhost}:${ORACLE_PORT:1521}:${ORACLE_SID:ORCLCDB}"
+    username: ${ORACLE_USER:system}
+    password: ${ORACLE_PASSWORD:oracle}
+    driverClassName: oracle.jdbc.OracleDriver
+
+# Micronaut Data settings
+micronaut:
+  data:
+    datasource:
+      default: mysql
