@@ -22,7 +22,7 @@ micronaut {
     }
     aot {
         optimizeServiceLoading.set(true)
-        convertYamlToProperties.set(true)
+       // convertYamlToProperties.set(true)
     }
 }
 
