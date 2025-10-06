@@ -1,0 +1,23 @@
+{
+  "queryparameters": "",
+  "headerparameters": "",
+  "input": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "string"
+    }
+  },
+  "output": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "string",
+      "age": "number",
+      "count": "number"
+    }
+  }
+}

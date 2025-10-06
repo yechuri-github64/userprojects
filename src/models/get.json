@@ -1,0 +1,18 @@
+{
+  "queryparameters": "",
+  "headerparameters": "",
+  "input": {
+    "query": {
+      "name": "michael",
+      "country_id": "US"
+    }
+  },
+  "output": {
+    "body": {
+      "name": "michael",
+      "age": 69,
+      "count": 148109,
+      "country_id": "US"
+    }
+  }
+}
