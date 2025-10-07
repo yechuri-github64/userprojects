@@ -1,0 +1,30 @@
+micronaut:
+  application:
+    name: get-accounts
+  server:
+    port: 8080
+
+# MySQL datasource configuration (named connection)
+datasources:
+  mysql:
+    url: jdbc:mysql://localhost:3306/your_database?useSSL=false&serverTimezone=UTC
+    username: your_username
+    password: your_password
+    driverClassName: com.mysql.cj.jdbc.Driver
+    schema-generate: NONE
+    dialect: MYSQL
+
+jpa:
+  mysql:
+    entity-scan:
+      packages: com.ai2dev.get_accounts.domain
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: validate
+        show_sql: false
+        format_sql: false
+
+logger:
+  levels:
+    io.micronaut.data.query: INFO
