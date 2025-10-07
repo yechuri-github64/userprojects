@@ -1,0 +1,1 @@
+package com.ai2dev.guessname.data.repository.primary;\n\nimport com.ai2dev.guessname.domain.primary.Person;\nimport io.micronaut.data.annotation.Repository;\nimport io.micronaut.data.jpa.repository.JpaRepository;\n\n@Repository\npublic interface PersonRepository extends JpaRepository<Person, Long> {\n}\n

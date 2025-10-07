@@ -1,0 +1,1 @@
+package com.ai2dev.guessname.data.repository.analytics;\n\nimport com.ai2dev.guessname.domain.analytics.EventLog;\nimport io.micronaut.data.annotation.Repository;\nimport io.micronaut.data.jpa.repository.JpaRepository;\n\n@Repository("analytics")\npublic interface EventLogRepository extends JpaRepository<EventLog, Long> {\n}\n
