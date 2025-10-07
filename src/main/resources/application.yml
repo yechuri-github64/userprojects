@@ -7,9 +7,9 @@ micronaut:
 # MySQL datasource configuration (named connection)
 datasources:
   mysql:
-    url: jdbc:mysql://localhost:3306/your_database?useSSL=false&serverTimezone=UTC
-    username: your_username
-    password: your_password
+    url: jdbc:mysql://161.97.137.17:3306/orders_management?useSSL=false&serverTimezone=UTC
+    username: admin_orders
+    password: Test@123456!
     driverClassName: com.mysql.cj.jdbc.Driver
     schema-generate: NONE
     dialect: MYSQL
