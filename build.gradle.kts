@@ -48,7 +48,7 @@ micronaut {
     }
     aot {
         optimizeServiceLoading.set(true)
-        convertYamlToJava.set(true)
+        //convertYamlToJava.set(true)
         precomputeOperations.set(true)
         cacheEnvironment.set(true)
     }
