@@ -38,6 +38,13 @@ dependencies {
 application {
     mainClass.set("com.ai2dev.get_accounts.Application")
 }
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            "Main-Class" to application.mainClass.get()
+        )
+    }
+}
 
 micronaut {
     version.set("4.3.4")
