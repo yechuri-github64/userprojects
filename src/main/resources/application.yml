@@ -1,0 +1,49 @@
+micronaut:
+  application:
+    name: guess-name-service
+  server:
+    port: ${SERVER_PORT:8080}
+
+# Multiple datasource configuration
+# Each datasource has its own settings
+# Use environment variables to override in different environments
+
+datasources:
+  default:
+    url: ${DB_MAIN_URL:`jdbc:postgresql://localhost:5432/guess_main`}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_MAIN_USERNAME:postgres}
+    password: ${DB_MAIN_PASSWORD:postgres}
+    maximumPoolSize: 5
+  audit:
+    url: ${DB_AUDIT_URL:`jdbc:postgresql://localhost:5432/guess_audit`}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_AUDIT_USERNAME:postgres}
+    password: ${DB_AUDIT_PASSWORD:postgres}
+    maximumPoolSize: 5
+
+jpa:
+  default:
+    entity-scan:
+      packages:
+        - com.ai2dev.guess_name.domain.main
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+        format_sql: true
+  audit:
+    entity-scan:
+      packages:
+        - com.ai2dev.guess_name.domain.audit
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: false
+
+logger:
+  levels:
+    io.micronaut.data: INFO
+    org.hibernate.SQL: INFO
