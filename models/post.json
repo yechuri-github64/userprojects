@@ -1,0 +1,10 @@
+{
+  "queryparameters": "{
+name:string}",
+  "headerparameters": "{
+name:string}",
+  "input": "{
+name:string}",
+  "output": "{
+name:string}"
+}

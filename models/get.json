@@ -1,0 +1,14 @@
+{
+  "queryparameters": "{
+  \"query\": {
+    \"name\": \"string\"
+  }
+}",
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "name": "string",
+    "age": "number",
+    "count": "number"
+  }
+}
