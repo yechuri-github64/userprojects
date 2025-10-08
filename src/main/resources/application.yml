@@ -3,17 +3,17 @@ micronaut:
     name: get-accounts
   server:
     port: 8080
-
+ 
 # MySQL datasource configuration (named connection)
 datasources:
   mysql:
-    url: jdbc:mysql://161.97.137.17:3306/orders_management?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://161.97.137.17:3306/orders_management?useSSL=false&serverTimezone=UTC&zeroDateTimeBehavior=CONVERT_TO_NULL  #changed
     username: admin_orders
     password: Test@123456!
     driverClassName: com.mysql.cj.jdbc.Driver
     schema-generate: NONE
     dialect: MYSQL
-
+ 
 jpa:
   mysql:
     entity-scan:
@@ -21,10 +21,10 @@ jpa:
     properties:
       hibernate:
         hbm2ddl:
-          auto: validate
+          auto: update  #changed
         show_sql: false
         format_sql: false
-
+ 
 logger:
   levels:
     io.micronaut.data.query: INFO
