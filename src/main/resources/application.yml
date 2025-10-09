@@ -8,10 +8,10 @@ server:
 # Datasource configuration for MySQL
 datasources:
   default:
-    url: "jdbc:mysql://localhost:3306/contractsdb"
+    url: "jdbc:mysql://161.97.137.17:3306/orders_management"
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: dbuser
-    password: dbpassword
+    username: admin_orders
+    password: Test@123456!
     maximumPoolSize: 10
     dialect: MYSQL
 
