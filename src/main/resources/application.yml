@@ -1,0 +1,18 @@
+micronaut:
+  application:
+    name: test-contracts-mgmt
+
+server:
+  port: 8080
+
+# Datasource configuration for MySQL
+datasources:
+  default:
+    url: "jdbc:mysql://localhost:3306/contractsdb"
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: dbuser
+    password: dbpassword
+    maximumPoolSize: 10
+    dialect: MYSQL
+
+# Each backend connection should have its own configuration section above. If you add others, add separate keys under datasources.
