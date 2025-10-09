@@ -50,7 +50,7 @@ application {
 
 micronaut {
     runtime.set(MicronautRuntime.NETTY)
-    testRuntime.set(io.micronaut.gradle.MicronautRuntime.JUNIT)
+    //testRuntime.set(io.micronaut.gradle.MicronautRuntime.JUNIT)
     processing {
         incremental.set(true)
         annotations.add("com.ai2dev.testcontractsmgmt.*")
