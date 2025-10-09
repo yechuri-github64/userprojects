@@ -1,3 +1,4 @@
+import io.micronaut.gradle.MicronautRuntime
 plugins {
     id("io.micronaut.application") version "4.3.4"
     id("io.micronaut.aot") version "4.3.4"
