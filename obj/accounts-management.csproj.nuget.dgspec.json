@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "restore": {
+    "/var/www/vhosts/devninja.ai2dev.com/backend-devninja.ai2dev.com/ai2dev-folders/projects/super.ninja@ai2dev.com/accounts-management/generatedRepos/accounts-management.csproj": {}
+  },
+  "projects": {
+    "/var/www/vhosts/devninja.ai2dev.com/backend-devninja.ai2dev.com/ai2dev-folders/projects/super.ninja@ai2dev.com/accounts-management/generatedRepos/accounts-management.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/var/www/vhosts/devninja.ai2dev.com/backend-devninja.ai2dev.com/ai2dev-folders/projects/super.ninja@ai2dev.com/accounts-management/generatedRepos/accounts-management.csproj",
+        "projectName": "accounts-management",
+        "projectPath": "/var/www/vhosts/devninja.ai2dev.com/backend-devninja.ai2dev.com/ai2dev-folders/projects/super.ninja@ai2dev.com/accounts-management/generatedRepos/accounts-management.csproj",
+        "packagesPath": "/var/www/vhosts/devninja.ai2dev.com/.nuget/packages/",
+        "outputPath": "/var/www/vhosts/devninja.ai2dev.com/backend-devninja.ai2dev.com/ai2dev-folders/projects/super.ninja@ai2dev.com/accounts-management/generatedRepos/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/var/www/vhosts/devninja.ai2dev.com/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.32, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.32, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.36, 6.0.36]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[6.0.36, 6.0.36]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.36, 6.0.36]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.412/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
