@@ -1,0 +1,13 @@
+{
+  "queryparameters": {
+    "params": {
+      "id": "integer"
+    }
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "deleted": "boolean",
+    "id": "integer"
+  }
+}

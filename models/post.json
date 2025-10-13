@@ -1,0 +1,23 @@
+{
+  "queryparameters": {
+    "accounts": [
+      {
+        "name": "string",
+        "email": "string",
+        "address": "string"
+      }
+    ]
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "created": [
+      {
+        "id": "integer",
+        "name": "string",
+        "email": "string",
+        "address": "string"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "queryparameters": {
+    "params": {
+      "id": "integer"
+    },
+    "body": {
+      "name": "string (optional)",
+      "email": "string (optional)",
+      "address": "string (optional)"
+    }
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "id": "integer",
+    "name": "string",
+    "email": "string",
+    "address": "string"
+  }
+}
