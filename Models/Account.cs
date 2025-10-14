@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,5 +24,18 @@ public class Account
 
     [MaxLength(500)]
     [Column("address")]
-    public string Address { get; set; } = string.Empty;
+    public string? Address { get; set; }  // nullable
+
+    [MaxLength(50)]
+    [Column("status")]
+    public string? Status { get; set; }   // nullable
+
+    [Column("balance", TypeName = "decimal(19,4)")]
+    public decimal? Balance { get; set; }  // nullable
+
+    [Column("created_at")]
+    public DateTime? CreatedAt { get; set; } // nullable
+
+    [Column("updated_at")]
+    public DateTime? UpdatedAt { get; set; } // nullable
 }
