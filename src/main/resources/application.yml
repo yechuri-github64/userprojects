@@ -1,0 +1,23 @@
+micronaut:
+  application:
+    name: test-project-java
+
+datasources:
+  mysql:
+    url: "jdbc:mysql://localhost:3306/accountsdb"
+    username: "root"
+    password: "password"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    dialect: MYSQL
+    maximumPoolSize: 10
+  default:
+    url: "jdbc:mysql://localhost:3306/accountsdb"
+    username: "root"
+    password: "password"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    dialect: MYSQL
+
+micronaut:
+  datasources:
+    default:
+      url: ${"datasources.default.url"}
