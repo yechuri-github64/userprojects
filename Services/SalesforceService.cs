@@ -93,6 +93,7 @@ namespace accounts_sf_sa.Services
             {
                 var (client, baseUrl) = await CreateAuthedClientAsync();
                 var url = $"{baseUrl}/sobjects/Account/{id}";
+                _logger.LogInformation("Salesforce URL: {url}", url);
                 var httpRes = await client.GetAsync(url);
                 var content = await httpRes.Content.ReadAsStringAsync();
                 if (httpRes.IsSuccessStatusCode)
@@ -178,6 +179,7 @@ namespace accounts_sf_sa.Services
         private async Task<(HttpClient client, string baseUrl)> CreateAuthedClientAsync()
         {
             var token = await GetTokenAsync();
+            _logger.LogInformation("Salesforce token: {token}", token);
             var client = _httpClientFactory.CreateClient("Salesforce");
             client.Timeout = TimeSpan.FromSeconds(Math.Max(5, _options.TimeoutSeconds));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
@@ -189,6 +191,7 @@ namespace accounts_sf_sa.Services
                 new MediaTypeWithQualityHeaderValue("application/json")
             );
             var baseUrl = $"{token.InstanceUrl}/services/data/v{_options.ApiVersion}";
+            _logger.LogInformation("Salesforce base URL for API calls: {BaseUrl}", baseUrl);
             return (client, baseUrl);
         }
 
