@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/accounts-sf-sa.props" />
-</Project>
