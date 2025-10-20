@@ -233,6 +233,7 @@ namespace accounts_sf_sa.Services
                  _logger.LogInformation("Salesforce token URL for API calls: {tokenUrl}", tokenUrl);
                   _logger.LogInformation("Salesforce Content for the request: {content}", content);
                 var res = await client.PostAsync(tokenUrl, content);
+                res.EnsureSuccessStatusCode(); // Throws exception if not 2xx
                 var payload = await res.Content.ReadAsStringAsync();
                 if (!res.IsSuccessStatusCode)
                 {
@@ -278,11 +279,12 @@ namespace accounts_sf_sa.Services
                     InstanceUrl = "",
                     ExpiresAtUtc = DateTimeOffset.UtcNow.AddSeconds(120 - 60),
                 };
-                return _token;
+               
             }
             finally
             {
                 _tokenLock.Release();
+                 return _token;
             }
         }
 
