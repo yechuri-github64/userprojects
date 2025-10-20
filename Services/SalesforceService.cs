@@ -243,6 +243,7 @@ namespace accounts_sf_sa.Services
                 using var doc = JsonDocument.Parse(payload);
                 var accessToken =
                     doc.RootElement.GetProperty("access_token").GetString() ?? string.Empty;
+                     _logger.LogInformation("Salesforce : accessToken retrieved: {accessToken}", accessToken);
                 var instanceUrl = !string.IsNullOrWhiteSpace(_options.InstanceUrl)
                     ? _options.InstanceUrl
                     : (
@@ -268,6 +269,9 @@ namespace accounts_sf_sa.Services
                 await LogAsync("AUTH", true, "", "Token acquired");
                 _logger.LogInformation("Salesforce token for API calls: {_token}", _token);
                 return _token;
+            }catch(Exception ex){
+                _logger.LogError(ex, "Error creating token.");
+            
             }
             finally
             {
