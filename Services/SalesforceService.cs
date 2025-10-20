@@ -276,7 +276,7 @@ namespace accounts_sf_sa.Services
                 {
                     AccessToken = "",
                     InstanceUrl = "",
-                    ExpiresAtUtc = DateTimeOffset.UtcNow.AddSeconds(expiresIn - 60),
+                    ExpiresAtUtc = DateTimeOffset.UtcNow.AddSeconds(120 - 60),
                 };
                 return _token;
             }
