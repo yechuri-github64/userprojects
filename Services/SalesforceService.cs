@@ -273,18 +273,12 @@ namespace accounts_sf_sa.Services
                 return _token;
             }catch(Exception ex){
                 _logger.LogError(ex, "Error creating token.");    
-                  _token = new TokenState
-                {
-                    AccessToken = "",
-                    InstanceUrl = "",
-                    ExpiresAtUtc = DateTimeOffset.UtcNow.AddSeconds(120 - 60),
-                };
-               
+                  return _token;
             }
             finally
             {
                 _tokenLock.Release();
-                 return _token;
+                
             }
         }
 
