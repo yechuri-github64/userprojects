@@ -229,7 +229,8 @@ namespace accounts_sf_sa.Services
                         ["password"] = _options.Password + _options.SecurityToken,
                     }
                 );
-
+                 _logger.LogInformation("Salesforce token URL for API calls: {tokenUrl}", tokenUrl);
+                  _logger.LogInformation("Salesforce Content for the request: {content}", content);
                 var res = await client.PostAsync(tokenUrl, content);
                 var payload = await res.Content.ReadAsStringAsync();
                 if (!res.IsSuccessStatusCode)
@@ -264,6 +265,7 @@ namespace accounts_sf_sa.Services
                 };
 
                 await LogAsync("AUTH", true, "", "Token acquired");
+                _logger.LogInformation("Salesforce token for API calls: {_token}", _token);
                 return _token;
             }
             finally
