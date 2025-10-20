@@ -178,7 +178,7 @@ namespace accounts_sf_sa.Services
 
         private async Task<(HttpClient client, string baseUrl)> CreateAuthedClientAsync()
         { 
-          _logger.LogInformation("In Salesforce token acquisition - {token}", token);
+          _logger.LogInformation("In Salesforce token acquisition started." );
             var token = await GetTokenAsync();
             _logger.LogInformation("Salesforce token: {token}", token);
             var client = _httpClientFactory.CreateClient("Salesforce");
