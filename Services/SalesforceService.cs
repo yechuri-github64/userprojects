@@ -236,6 +236,7 @@ namespace accounts_sf_sa.Services
                 var payload = await res.Content.ReadAsStringAsync();
                 if (!res.IsSuccessStatusCode)
                 {
+                    _logger.LogInformation("Salesforce token for API calls: {res.IsSuccessStatusCode}", res.IsSuccessStatusCode);
                     var errors = string.Join("; ", ParseSalesforceErrors(payload));
                     throw new InvalidOperationException($"Salesforce auth failed: {errors}");
                 }
@@ -270,8 +271,8 @@ namespace accounts_sf_sa.Services
                 _logger.LogInformation("Salesforce token for API calls: {_token}", _token);
                 return _token;
             }catch(Exception ex){
-                _logger.LogError(ex, "Error creating token.");
-            
+                _logger.LogError(ex, "Error creating token.");    
+                return false;
             }
             finally
             {
