@@ -272,7 +272,7 @@ namespace accounts_sf_sa.Services
                 return _token;
             }catch(Exception ex){
                 _logger.LogError(ex, "Error creating token.");    
-                return false;
+                return "";
             }
             finally
             {
