@@ -62,6 +62,3 @@ application {
     mainClass.set("com.ai2dev.testjavaproject.Application")
 }
 
-tasks.withType<Javadoc> {
-    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "")
-}
