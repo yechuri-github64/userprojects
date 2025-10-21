@@ -56,6 +56,7 @@ namespace accounts_sf_sa.Services
                 {
                     var (client, baseUrl) = await CreateAuthedClientAsync();
                     var url = $"{baseUrl}/sobjects/Account";
+                    _logger.LogInformation("In create Account -Request -: {url}", url);
                     var payload = JsonSerializer.Serialize(acct);
                     var httpRes = await client.PostAsync(
                         url,
@@ -230,18 +231,11 @@ namespace accounts_sf_sa.Services
                         ["password"] = _options.Password + _options.SecurityToken,
                     }
                 );
-                 _logger.LogInformation("Salesforce token URL for API calls: {tokenUrl}", tokenUrl);
-                  _logger.LogInformation("Salesforce Content for the request: {content}", content);
-                  
-                // Log the content for debugging
-                string debugContent = await content.ReadAsStringAsync();
-                _logger.LogInformation("Form Content: {Content}", debugContent);
-
+                 
                 var res = await client.PostAsync(tokenUrl, content);
                 
                 var payload = await res.Content.ReadAsStringAsync();
-                _logger.LogInformation("Form response , payload: {payload}", payload);
-
+                
                 res.EnsureSuccessStatusCode(); // Throws exception if not 2xx
                 if (!res.IsSuccessStatusCode)
                 {
