@@ -7,7 +7,7 @@ val micronautVersion = "4.3.4"
 val micronautBomVersion = "3.9.7"
 val aotVersion = "4.3.4"
 val shadowVersion = "8.1.1"
-val mysqlVersion = "8.1.0"
+val mysqlVersion = "8.0.33"
 val snakeyamlVersion = "2.0"
 
 plugins {
@@ -53,7 +53,7 @@ dependencies {
     implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
 
     // MySQL connector with explicit version
-    runtimeOnly("mysql:mysql-connector-j:${mysqlVersion}")
+    runtimeOnly("mysql:mysql-connector-java:${mysqlVersion}")
 
     annotationProcessor("io.micronaut:micronaut-inject-java")
 }
