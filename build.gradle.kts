@@ -53,7 +53,7 @@ dependencies {
     implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
 
     // MySQL connector with explicit version
-    runtimeOnly("mysql:mysql-connector-java:${mysqlVersion}")
+    runtimeOnly("mysql:mysql-connector-j:${mysqlVersion}")
 
     annotationProcessor("io.micronaut:micronaut-inject-java")
 }
