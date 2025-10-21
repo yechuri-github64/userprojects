@@ -13,9 +13,9 @@ val snakeyamlVersion = "2.0"
 plugins {
     id("java")
     id("application")
-    id("com.github.johnrengelman.shadow") version shadowVersion
-    id("io.micronaut.application") version micronautVersion
-    id("io.micronaut.aot") version aotVersion
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.3.4"
+    id("io.micronaut.aot") version "4.3.4"
 }
 
 group = projectGroup
