@@ -238,8 +238,11 @@ namespace accounts_sf_sa.Services
                 _logger.LogInformation("Form Content: {Content}", debugContent);
 
                 var res = await client.PostAsync(tokenUrl, content);
-                res.EnsureSuccessStatusCode(); // Throws exception if not 2xx
+                
                 var payload = await res.Content.ReadAsStringAsync();
+                _logger.LogInformation("Form response , payload: {payload}", payload);
+
+                res.EnsureSuccessStatusCode(); // Throws exception if not 2xx
                 if (!res.IsSuccessStatusCode)
                 {
                     _logger.LogInformation("Salesforce token for API calls: {res.IsSuccessStatusCode}", res.IsSuccessStatusCode);
