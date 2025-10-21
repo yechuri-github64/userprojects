@@ -1,4 +1,4 @@
-import org.gradle.jvm.tasks.Javadoc
+//import org.gradle.jvm.tasks.Javadoc
 
 val projectGroup = "com.ai2dev.testjavaproject"
 val projectVersion = "0.1"
