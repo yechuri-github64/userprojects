@@ -232,6 +232,11 @@ namespace accounts_sf_sa.Services
                 );
                  _logger.LogInformation("Salesforce token URL for API calls: {tokenUrl}", tokenUrl);
                   _logger.LogInformation("Salesforce Content for the request: {content}", content);
+                  
+                // Log the content for debugging
+                string debugContent = await content.ReadAsStringAsync();
+                _logger.LogInformation("Form Content: {Content}", debugContent);
+
                 var res = await client.PostAsync(tokenUrl, content);
                 res.EnsureSuccessStatusCode(); // Throws exception if not 2xx
                 var payload = await res.Content.ReadAsStringAsync();
