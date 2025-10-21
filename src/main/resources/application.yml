@@ -1,0 +1,23 @@
+micronaut:
+  application:
+    name: testjavaproject
+
+server:
+  port: 8080
+
+datasources:
+  default:
+    url: "jdbc:mysql://localhost:3306/testdb"
+    username: "dbuser"
+    password: "dbpass"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    dialect: MYSQL
+    schema-generate: CREATE
+
+# Micronaut Data uses this to manage schema generation for development
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
