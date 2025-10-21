@@ -1,0 +1,4 @@
+{
+  "function-handler": "DatatableLambda::DatatableLambda.Function::datatable",
+  "framework": "net8.0"
+}
