@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using DatatableLambda.Data;
+using datatable.Data;
 using DotNetEnv;
 
-namespace DatatableLambda.Services
+namespace datatable.Services
 {
     public class Service
     {
