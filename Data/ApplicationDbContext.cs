@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 
-namespace DatatableLambda.Data
+namespace datatable.Data
 {
     public class Account
     {
