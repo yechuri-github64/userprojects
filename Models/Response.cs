@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using DatatableLambda.Data;
+using datatable.Data;
 
-namespace DatatableLambda.Models
+namespace datatable.Models
 {
     public class ErrorDetail
     {
