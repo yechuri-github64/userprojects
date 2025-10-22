@@ -6,5 +6,5 @@
   "function-runtime": "dotnet8",
   "function-memory-size": 256,
   "function-timeout": 30,
-  "function-handler": "DatatableLambda::DatatableLambda.Function::datatable"
+  "function-handler": "DatatableLambda::DatatableLambda.Function::DatatableLambda"
 }
