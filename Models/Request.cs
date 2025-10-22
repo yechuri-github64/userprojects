@@ -1,6 +1,6 @@
 using System;
 
-namespace DatatableLambda.Models
+namespace datatable.Models
 {
     // Sample request model - extend as needed
     public class Request
