@@ -1,0 +1,6 @@
+{
+  "function-handler": "AccountslamdaLambda::AccountslamdaLambda.Function::accountslamda",
+  "framework": "net8.0",
+  "function-name": "accountslamda",
+  "function-runtime": "dotnet8"
+}
