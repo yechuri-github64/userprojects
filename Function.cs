@@ -1,3 +1,4 @@
+[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 namespace GetaccountsLambda;
 
 using System;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using GetaccountsLambda.Services;
 using GetaccountsLambda.Models;
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+
 public class Function
 {
     private readonly Service _service;
