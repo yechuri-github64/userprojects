@@ -1,0 +1,10 @@
+{
+  "Profile": "default",
+  "Region": "us-east-1",
+  "Configuration": "Release",
+  "Framework": "net8.0",
+  "FunctionName": "accountslamda",
+  "FunctionHandler": "AccountslamdaLambda::AccountslamdaLambda.Function::accountslamda",
+  "FunctionMemorySize": 256,
+  "FunctionTimeout": 30
+}
