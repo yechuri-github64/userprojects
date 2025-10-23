@@ -10,11 +10,13 @@ namespace ContractmanagementemailLambda.Services
     public class Service
     {
         private readonly string _conn;
+        private readonly ILambdaLogger _logger;
         private static readonly ConcurrentQueue<Response.ResponseItem> _queue = new ConcurrentQueue<Response.ResponseItem>();
 
-        public Service(string conn)
+        public Service(string conn, ILambdaLogger logger)
         {
             _conn = conn ?? "dummy";
+            _logger=logger;
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace ContractmanagementemailLambda.Services
         {
             try
             {
-               context.Logger?.LogInformation("In the function EnqueueFromDbAsync ");
+                _logger.LogInformation("In the function EnqueueFromDbAsync ");
 
                 using var conn = new MySqlConnection(_conn);
                 await conn.OpenAsync();
@@ -51,7 +53,7 @@ namespace ContractmanagementemailLambda.Services
                     };
                     _queue.Enqueue(item);
                     logger?.Invoke($"Enqueued item from DB: {JsonSerializer.Serialize(item)}");
-                    context.Logger?.LogInformation("EnqueueFromDbAsync : Enqueued item from DB");
+                    _logger.LogInformation("EnqueueFromDbAsync : Enqueued item from DB");
 
                 }
             }
