@@ -1,4 +1,4 @@
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+
 namespace GetaccountsLambda;
 
 using System;
