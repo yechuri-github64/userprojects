@@ -1,0 +1,38 @@
+micronaut:
+  application:
+    name: testjt
+  server:
+    port: 8080
+  runtime: lambda
+
+# Custom property to indicate lambda handler name
+lambda:
+  handler: testjt
+
+# Datasource configuration for the downstream MySQL connection (Conn Name: MySQL)
+datasources:
+  MySQL:
+    url: "jdbc:mysql://YOUR_MYSQL_HOST:3306/YOUR_DATABASE"
+    username: "YOUR_DB_USER"
+    password: "YOUR_DB_PASSWORD"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    maximumPoolSize: 5
+
+# Micronaut JDBC Hikari mapping for Micronaut versions that use micronaut.datasource prefix
+# For compatibility if your Micronaut version expects micronaut.datasource.default, you can map accordingly.
+micronaut:
+  datasources:
+    MySQL:
+      url: "jdbc:mysql://YOUR_MYSQL_HOST:3306/YOUR_DATABASE"
+      username: "YOUR_DB_USER"
+      password: "YOUR_DB_PASSWORD"
+      driverClassName: "com.mysql.cj.jdbc.Driver"
+      maximumPoolSize: 5
+
+# Logging
+logging:
+  level:
+    root: INFO
+    Testjt: DEBUG
+
+# Note: Replace YOUR_MYSQL_HOST, YOUR_DATABASE, YOUR_DB_USER, YOUR_DB_PASSWORD with real values or environment variables.
