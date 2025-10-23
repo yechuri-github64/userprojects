@@ -14,6 +14,7 @@ namespace ContractmanagementemailLambda
     public class Function
     {
         private readonly Service _service;
+        private readonly ILambdaLogger _logger;
 
         public Function()
         {
@@ -37,7 +38,7 @@ namespace ContractmanagementemailLambda
                 // fall back to dummy
             }
 
-            _service = new Service(conn);
+            _service = new Service(conn, _logger);
         }
 
         /// <summary>
