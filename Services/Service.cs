@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Amazon.Lambda.Core;
 using ContractmanagementemailLambda.Models;
 using MySql.Data.MySqlClient;
 
