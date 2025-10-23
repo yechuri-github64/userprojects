@@ -27,18 +27,7 @@ namespace ContractmanagementemailLambda.Services
         {
             try
             {
-                if (string.Equals(_conn, "dummy", StringComparison.OrdinalIgnoreCase))
-                {
-                    var item = new Response.ResponseItem
-                    {
-                        Id = 1,
-                        ContractName = "SampleContract",
-                        Email = "sample@example.com"
-                    };
-                    _queue.Enqueue(item);
-                    logger?.Invoke($"Enqueued dummy item: {JsonSerializer.Serialize(item)}");
-                    return;
-                }
+               context.Logger?.LogInformation("In the function EnqueueFromDbAsync ");
 
                 using var conn = new MySqlConnection(_conn);
                 await conn.OpenAsync();
@@ -62,6 +51,8 @@ namespace ContractmanagementemailLambda.Services
                     };
                     _queue.Enqueue(item);
                     logger?.Invoke($"Enqueued item from DB: {JsonSerializer.Serialize(item)}");
+                    context.Logger?.LogInformation("EnqueueFromDbAsync : Enqueued item from DB");
+
                 }
             }
             catch (Exception ex)
