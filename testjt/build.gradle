@@ -7,7 +7,7 @@ plugins {
 
 group = 'testjt'
 version = '0.1'
-sourceCompatibility = '21'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
@@ -23,19 +23,34 @@ micronaut {
 }
 
 dependencies {
-    implementation 'io.micronaut:micronaut-runtime'
-    implementation 'io.micronaut.aws:micronaut-function-aws'
-    implementation 'io.micronaut:micronaut-http-client'
-    implementation 'io.micronaut.sql:micronaut-jdbc-hikari'
-    implementation 'mysql:mysql-connector-java:8.1.0'
+    // Micronaut core
+    implementation 'io.micronaut:micronaut-runtime:4.4.0'
+
+    // AWS Lambda support (Micronaut AWS) — pick a compatible recent version
+    implementation 'io.micronaut.aws:micronaut-function-aws:4.11.0'
+
+    // HTTP client support
+    implementation 'io.micronaut:micronaut-http-client:4.4.0'
+
+    // SQL / JDBC support with Hikari
+    implementation 'io.micronaut.sql:micronaut-jdbc-hikari:4.4.0'
+
+    // MySQL connector — pick a version that supports Java 17 and is up to date
+    implementation 'mysql:mysql-connector-java:8.0.33'   // or the latest 8.0.x
+
+    // Logging
     implementation 'ch.qos.logback:logback-classic:1.4.11'
     implementation 'org.slf4j:slf4j-api:2.0.7'
 
-    annotationProcessor 'io.micronaut:micronaut-inject-java'
-    testImplementation 'io.micronaut:micronaut-http-client'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    // Annotation processing for Micronaut inject
+    annotationProcessor 'io.micronaut:micronaut-inject-java:4.4.0'
+
+    // Test dependencies
+    testImplementation 'io.micronaut.test:micronaut-test-junit5:4.4.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 }
+
 
 application {
     mainClass = 'Testjt.Application'
