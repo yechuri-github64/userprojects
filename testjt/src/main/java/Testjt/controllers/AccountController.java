@@ -1,6 +1,6 @@
 package Testjt.controllers;
 
-import Testjt.Account;
+import Testjt.models.Account;
 import Testjt.AccountService;
 import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
