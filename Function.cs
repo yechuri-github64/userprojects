@@ -35,7 +35,7 @@ namespace TestsflambdaLambda
                     case "create":
                         if (request.Accounts == null || request.Accounts.Count == 0)
                         {
-                            return Response.Error("No accounts provided for creation", "Provide an array of account objects in the 'Accounts' property.");
+                            return Response.FromError("No accounts provided for creation", "Provide an array of account objects in the 'Accounts' property.");
                         }
                         var created = await _service.CreateAccountsAsync(request.Accounts);
                         return Response.Ok(created);
@@ -43,7 +43,7 @@ namespace TestsflambdaLambda
                     case "retrieve":
                         if (string.IsNullOrWhiteSpace(request.Id))
                         {
-                            return Response.Error("No Id provided for retrieve", "Provide a valid Account Id in the 'Id' property.");
+                            return Response.FromError("No Id provided for retrieve", "Provide a valid Account Id in the 'Id' property.");
                         }
                         var retrieved = await _service.GetAccountAsync(request.Id);
                         return Response.Ok(retrieved);
@@ -51,12 +51,12 @@ namespace TestsflambdaLambda
                     case "update":
                         if (request.Accounts == null || request.Accounts.Count == 0)
                         {
-                            return Response.Error("No account provided for update", "Provide a single account object in the 'Accounts' array to update (one at a time).");
+                            return Response.FromError("No account provided for update", "Provide a single account object in the 'Accounts' array to update (one at a time).");
                         }
                         var accountToUpdate = request.Accounts[0];
                         if (string.IsNullOrWhiteSpace(accountToUpdate.Id))
                         {
-                            return Response.Error("No Id in account for update", "Account must include its 'Id' to update.");
+                            return Response.FromError("No Id in account for update", "Account must include its 'Id' to update.");
                         }
                         await _service.UpdateAccountAsync(accountToUpdate);
                         return Response.Ok(new { message = "Account updated", id = accountToUpdate.Id });
@@ -64,13 +64,13 @@ namespace TestsflambdaLambda
                     case "delete":
                         if (string.IsNullOrWhiteSpace(request.Id))
                         {
-                            return Response.Error("No Id provided for delete", "Provide a valid Account Id in the 'Id' property.");
+                            return Response.FromError("No Id provided for delete", "Provide a valid Account Id in the 'Id' property.");
                         }
                         await _service.DeleteAccountAsync(request.Id);
                         return Response.Ok(new { message = "Account deleted", id = request.Id });
 
                     default:
-                        return Response.Error("Unsupported operation", "Supported operations are: create, retrieve, update, delete.");
+                        return Response.FromError("Unsupported operation", "Supported operations are: create, retrieve, update, delete.");
                 }
             }
             catch (ServiceException sx)
