@@ -1,5 +1,5 @@
 {
-  "function-handler": "TestSfLambdaLambda::TestSfLambdaLambda.Function::test-sf-lambda",
+  "function-handler": "TestSfLambdaLambda::TestSfLambdaLambda.Function::test_sf_lambda",
   "framework": "net8.0",
   "function-runtime": "dotnet8",
   "function-memory-size": 256,
