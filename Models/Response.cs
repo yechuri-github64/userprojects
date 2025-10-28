@@ -29,7 +29,7 @@ namespace TestsflambdaLambda.Models
             return new Response { Success = true, Message = "OK", Data = data };
         }
 
-        public static Response Error(string message, string details)
+        public static Response FromError(string message, string details)
         {
             return new Response
             {
