@@ -28,13 +28,12 @@ namespace TestsflambdaLambda.Services
 
         private async Task AuthenticateAsync()
         {
+            // ✅ If already authenticated, skip
             if (!string.IsNullOrEmpty(_accessToken) && !string.IsNullOrEmpty(_instanceUrl))
-            {
-                return; // already authenticated for lambda lifecycle
-            }
-
+                return;
+        
             var tokenUrl = _settings.TokenUrl;
-
+        
             var payload = new Dictionary<string, string>
             {
                 { "grant_type", "password" },
@@ -43,36 +42,36 @@ namespace TestsflambdaLambda.Services
                 { "username", _settings.Username },
                 { "password", _settings.Password + _settings.SecurityToken }
             };
-
-            var request = new HttpRequestMessage(HttpMethod.Post, tokenUrl)
+        
+            using var request = new HttpRequestMessage(HttpMethod.Post, tokenUrl)
             {
                 Content = new FormUrlEncodedContent(payload)
             };
-
+        
             var resp = await _httpClient.SendAsync(request);
             var content = await resp.Content.ReadAsStringAsync();
+        
             if (!resp.IsSuccessStatusCode)
-            {
                 throw new ServiceException((int)resp.StatusCode, "Failed to obtain Salesforce token", content);
-            }
-
+        
             using var doc = JsonDocument.Parse(content);
-            if (doc.RootElement.TryGetProperty("access_token", out var at))
-            {
-                _accessToken = at.GetString() ?? string.Empty;
-            }
-            if (doc.RootElement.TryGetProperty("instance_url", out var iu))
-            {
-                _instanceUrl = iu.GetString() ?? _settings.InstanceUrl;
-            }
-
+            _accessToken = doc.RootElement.TryGetProperty("access_token", out var at)
+                ? at.GetString() ?? string.Empty
+                : string.Empty;
+        
+            _instanceUrl = doc.RootElement.TryGetProperty("instance_url", out var iu)
+                ? iu.GetString() ?? _settings.InstanceUrl
+                : _settings.InstanceUrl;
+        
             if (string.IsNullOrEmpty(_accessToken) || string.IsNullOrEmpty(_instanceUrl))
-            {
                 throw new ServiceException(500, "Invalid token response", content);
-            }
-
+        
+            // ✅ Set once — only if BaseAddress not already set
+            if (_httpClient.BaseAddress == null)
+                _httpClient.BaseAddress = new Uri(_instanceUrl);
+        
+            // ✅ Authorization can be replaced safely
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
-            _httpClient.BaseAddress = new Uri(_instanceUrl);
         }
 
         public async Task<List<object>> CreateAccountsAsync(List<AccountDto> accounts)
