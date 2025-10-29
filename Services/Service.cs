@@ -128,51 +128,57 @@ namespace TestSfLambdaLambda.Services
         }
 
         public async Task<Response> GetAccountsAsync(Request request, ILambdaContext? context = null)
+{
+    try
+    {
+        var token = await GetAccessTokenAsync(context);
+        if (string.IsNullOrEmpty(token))
         {
-            try
-            {
-                var token = await GetAccessTokenAsync(context);
-                if (string.IsNullOrEmpty(token))
-                {
-                    return new Response(false, null, new ErrorDetail("Auth", "Unable to obtain access token"));
-                }
-
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                if (!string.IsNullOrEmpty(request?.AccountId))
-                {
-                    var uri = $"{_instanceUrl}/services/data/v{_apiVersion}/sobjects/Account/{request.AccountId}";
-                    var resp = await _httpClient.GetAsync(uri);
-                    var content = await resp.Content.ReadAsStringAsync();
-                    if (!resp.IsSuccessStatusCode)
-                    {
-                        context?.Logger.LogLine($"GetAccount failed: {content}");
-                        return new Response(false, null, new ErrorDetail("GetFailed", content));
-                    }
-                    using var doc = JsonDocument.Parse(content);
-                    return new Response(true, doc.RootElement, null);
-                }
-                else
-                {
-                    var soql = "SELECT Id, Name, Phone, Industry FROM Account LIMIT 200";
-                    var uri = $"{_instanceUrl}/services/data/v{_apiVersion}/query?q={Uri.EscapeDataString(soql)}";
-                    var resp = await _httpClient.GetAsync(uri);
-                    var content = await resp.Content.ReadAsStringAsync();
-                    if (!resp.IsSuccessStatusCode)
-                    {
-                        context?.Logger.LogLine($"QueryAccounts failed: {content}");
-                        return new Response(false, null, new ErrorDetail("QueryFailed", content));
-                    }
-                    using var doc = JsonDocument.Parse(content);
-                    return new Response(true, doc.RootElement, null);
-                }
-            }
-            catch (Exception ex)
-            {
-                context?.Logger.LogLine($"GetAccountsAsync exception: {ex}");
-                return new Response(false, null, new ErrorDetail("Exception", ex.Message));
-            }
+            return new Response(false, null, new ErrorDetail("Auth", "Unable to obtain access token"));
         }
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        if (!string.IsNullOrEmpty(request?.AccountId))
+        {
+            var uri = $"{_instanceUrl}/services/data/v{_apiVersion}/sobjects/Account/{request.AccountId}";
+            var resp = await _httpClient.GetAsync(uri);
+            var content = await resp.Content.ReadAsStringAsync();
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                context?.Logger.LogLine($"GetAccount failed: {content}");
+                return new Response(false, null, new ErrorDetail("GetFailed", content));
+            }
+
+            using var doc = JsonDocument.Parse(content);
+            var clone = JsonDocument.Parse(doc.RootElement.GetRawText()).RootElement.Clone();
+            return new Response(true, clone, null);
+        }
+        else
+        {
+            var soql = "SELECT Id, Name, Phone, Industry FROM Account LIMIT 200";
+            var uri = $"{_instanceUrl}/services/data/v{_apiVersion}/query?q={Uri.EscapeDataString(soql)}";
+            var resp = await _httpClient.GetAsync(uri);
+            var content = await resp.Content.ReadAsStringAsync();
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                context?.Logger.LogLine($"QueryAccounts failed: {content}");
+                return new Response(false, null, new ErrorDetail("QueryFailed", content));
+            }
+
+            using var doc = JsonDocument.Parse(content);
+            var clone = JsonDocument.Parse(doc.RootElement.GetRawText()).RootElement.Clone();
+            return new Response(true, clone, null);
+        }
+    }
+    catch (Exception ex)
+    {
+        context?.Logger.LogLine($"GetAccountsAsync exception: {ex}");
+        return new Response(false, null, new ErrorDetail("Exception", ex.Message));
+    }
+}
 
         public async Task<Response> UpdateAccountAsync(Request request, ILambdaContext? context = null)
         {
