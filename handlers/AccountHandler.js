@@ -10,10 +10,20 @@ async function parseBody(body) {
 }
 
 exports.handler = async (event) => {
-  console.log('Received event:', JSON.stringify({ httpMethod: event.httpMethod, pathParameters: event.pathParameters }));
+  console.log('Received event:', JSON.stringify({
+    httpMethod: event.httpMethod,
+    pathParameters: event.pathParameters,
+    queryStringParameters: event.queryStringParameters
+  }));
+
   try {
     const method = (event.httpMethod || 'GET').toUpperCase();
-    const id = event.pathParameters && event.pathParameters.id;
+
+    // 👇 handles both /{id} and ?id=
+    const id =
+      (event.pathParameters && event.pathParameters.id) ||
+      (event.queryStringParameters && event.queryStringParameters.id);
+
     const body = await parseBody(event.body);
 
     if (method === 'POST') {
@@ -25,13 +35,13 @@ exports.handler = async (event) => {
     }
 
     if (method === 'GET') {
-      if (!id) return buildResponse(400, { message: 'Missing account id in path' });
+      if (!id) return buildResponse(400, { message: 'Missing account id in path or query' });
       const account = await service.getAccount(id);
       return buildResponse(200, account);
     }
 
     if (method === 'PUT' || method === 'PATCH') {
-      if (!id) return buildResponse(400, { message: 'Missing account id in path' });
+      if (!id) return buildResponse(400, { message: 'Missing account id in path or query' });
       if (!body || typeof body !== 'object') {
         return buildResponse(400, { message: 'Invalid account object in request body' });
       }
@@ -41,7 +51,7 @@ exports.handler = async (event) => {
     }
 
     if (method === 'DELETE') {
-      if (!id) return buildResponse(400, { message: 'Missing account id in path' });
+      if (!id) return buildResponse(400, { message: 'Missing account id in path or query' });
       await service.deleteAccount(id);
       return buildResponse(204, null);
     }
