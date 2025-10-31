@@ -1,0 +1,13 @@
+{
+  "name": "accounts-salesforce-app",
+  "version": "1.0.0",
+  "description": "Lambda to manage Salesforce Account records (create multiple, retrieve, update single, delete)",
+  "main": "accounts-salesforce-app.js",
+  "dependencies": {
+    "jsforce": "^1.10.1"
+  },
+  "scripts": {
+    "start": "node accounts-salesforce-app.js",
+    "test": "echo "No tests specified" && exit 0"
+  }
+}
