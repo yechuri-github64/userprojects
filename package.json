@@ -1,0 +1,12 @@
+{
+  "name": "accounts-salesforce-app",
+  "version": "1.0.0",
+  "description": "AWS Lambda to create, retrieve, update and delete Salesforce Account records",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "jsforce": "^2.0.0"
+  }
+}
