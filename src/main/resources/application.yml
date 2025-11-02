@@ -1,0 +1,1 @@
+micronaut:\n  server:\n    port: 8080\n\napp:\n  datasource:\n    postgres:\n      url: "jdbc:postgresql://localhost:5432/testdb"\n      username: "testuser"\n      password: "testpass"\n      maximumPoolSize: 10\n\nmongodb:\n  uri: "mongodb://localhost:27017"\n  database: "testdb"\n

@@ -1,0 +1,1 @@
+package com.ai2dev.testjava_wc;\n\nimport io.micronaut.runtime.Micronaut;\n\npublic class Application {\n    public static void main(String[] args) {\n        Micronaut.run(Application.class, args);\n    }\n}\n
