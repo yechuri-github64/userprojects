@@ -1,0 +1,20 @@
+micronaut:
+  application:
+    name: accounts-salesforce-app
+  server:
+    port: 8080
+
+salesforce:
+  base-url: "https://orgfarm-0b7f8fa7ba-dev-ed.develop.my.salesforce.com"
+  api-version: "v52.0"
+  client-id: "3MVG97L7PWbPq6UyZnWfYfHgfWF1O7aUOrpninWwDPItEu1WbZ062kIyq8KakIOesvtsinN4FFML.jw8BozHm"
+  client-secret: "5D7D37E43BC575AD5656C2AEBB7B6BD32BEE2FBB6C3C167E116AF935C9E0A5AA"
+  username: "sftest602@agentforce.com"
+  password: "sf1test@890"
+  auth-url: "https://login.salesforce.com"
+  grant-type: "password"
+  security-token: "2WZBrgHCV8XHUjLwPu429fe3"   
+  connection-timeout: 5000               
+  read-timeout: 10000                     
+  environment: "production"                
+  logging-enabled: true                  
