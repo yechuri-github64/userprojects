@@ -41,7 +41,7 @@ micronaut {
     version("4.3.4")
     runtime("netty")
     aot {
-        enabled.set(false)
+    isEnabled = false
     }
     processing {
         incremental(true)
