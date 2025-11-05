@@ -1,0 +1,1 @@
+package com.ai2dev.randomlambda1.model;\n\npublic class RandomResponse {\n    private final int value;\n\n    public RandomResponse(int value) {\n        this.value = value;\n    }\n\n    public int getValue() {\n        return value;\n    }\n}\n

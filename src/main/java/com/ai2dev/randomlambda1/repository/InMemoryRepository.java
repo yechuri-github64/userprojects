@@ -1,0 +1,1 @@
+package com.ai2dev.randomlambda1.repository;\n\nimport jakarta.inject.Singleton;\n\n@Singleton\npublic class InMemoryRepository {\n\n    // Placeholder repository for potential backend integration\n    public void save(int value) {\n        // no-op\n    }\n}\n

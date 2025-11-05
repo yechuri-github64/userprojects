@@ -1,0 +1,1 @@
+package com.ai2dev.randomlambda1.service;\n\nimport jakarta.inject.Singleton;\nimport java.util.concurrent.ThreadLocalRandom;\n\n@Singleton\npublic class RandomService {\n\n    public int generateAbove100() {\n        // Generate a random integer strictly greater than 100\n        return 101 + ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE - 100);\n    }\n}\n

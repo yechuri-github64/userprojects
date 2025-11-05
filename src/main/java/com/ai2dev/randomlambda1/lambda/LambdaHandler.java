@@ -1,0 +1,1 @@
+package com.ai2dev.randomlambda1.lambda;\n\nimport io.micronaut.function.aws.proxy.MicronautLambdaHandler;\n\npublic class LambdaHandler extends MicronautLambdaHandler {\n    public LambdaHandler() {\n        super();\n    }\n}\n

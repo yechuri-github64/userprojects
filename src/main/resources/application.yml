@@ -1,0 +1,1 @@
+micronaut:\n  application:\n    name: randomlambda1\n  server:\n    port: -1\n  runtime: lambda\njackson:\n  serialization:\n    WRITE_DATES_AS_TIMESTAMPS: false\n
