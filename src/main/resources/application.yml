@@ -1,5 +1,5 @@
 micronaut:
   application:
-    name: micronaut-lambda
+    name: micronaut-lambda-example
   server:
     port: -1
