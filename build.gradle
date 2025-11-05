@@ -13,7 +13,7 @@ repositories {
 
 micronaut {
     version "4.6.1" //updated
-    runtime "aws_lambda" //updated
+    runtime("lambda_java") //updated
     testRuntime "junit5"
     processing {
         incremental true
