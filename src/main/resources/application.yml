@@ -1,0 +1,11 @@
+micronaut:
+  application:
+    name: randomlambda1
+  server:
+    port: -1
+  jackson:
+    default-property-inclusion: non_null
+
+aws:
+  lambda:
+    handler: com.ai2dev.randomlambda1.lambda.LambdaHandler::handleRequest
