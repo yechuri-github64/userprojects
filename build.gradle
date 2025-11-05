@@ -8,6 +8,7 @@ repositories {
 }
 
 micronaut {
+    version '4.0.0'   // 👈 Add this line
     runtime 'aws_lambda'
     testRuntime 'junit5'
     processing {
