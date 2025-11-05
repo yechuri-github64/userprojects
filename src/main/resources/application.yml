@@ -1,0 +1,15 @@
+micronaut:
+  server:
+    port: 8080
+
+salesforce:
+  loginUrl: "https://login.salesforce.com"
+  clientId: "${SALESFORCE_CLIENT_ID:your-client-id}"
+  clientSecret: "${SALESFORCE_CLIENT_SECRET:your-client-secret}"
+  username: "${SALESFORCE_USERNAME:your-username}"
+  password: "${SALESFORCE_PASSWORD:your-password}"
+  securityToken: "${SALESFORCE_SECURITY_TOKEN:your-token}"
+
+# Application specific
+application:
+  name: accounts-salesforce-app
