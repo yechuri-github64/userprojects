@@ -27,7 +27,7 @@ java {
 }
 
 dependencies {
-    implementation platform("io.micronaut:micronaut-bom:4.6.1") //added
+    implementation platform("io.micronaut.platform:micronaut-platform:4.6.1") //added
     annotationProcessor "io.micronaut:micronaut-http-validation"
     implementation "io.micronaut:micronaut-runtime"
     implementation "io.micronaut:micronaut-function-aws"
