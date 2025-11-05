@@ -9,7 +9,7 @@ repositories {
 
 micronaut {
     version '4.0.0'   // 👈 Add this line
-    runtime 'aws_lambda'
+   runtime 'lambda_java'   // ✅ correct for AWS Lambda (Java runtime)
     testRuntime 'junit5'
     processing {
         incremental true
