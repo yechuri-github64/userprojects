@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: micronaut-aws-lambda
+  server:
+    port: -1
+
+# Configure any AWS specific or Micronaut settings here
