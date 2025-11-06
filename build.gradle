@@ -28,9 +28,10 @@ java {
 
 dependencies {
     implementation platform("io.micronaut.platform:micronaut-platform:4.6.1") //added
+    implementation platform("io.micronaut.aws:micronaut-aws-bom:4.6.1") // ADD THIS
     annotationProcessor "io.micronaut:micronaut-http-validation"
     implementation "io.micronaut:micronaut-runtime"
-    implementation "io.micronaut.aws:micronaut-aws-function"
+    implementation "io.micronaut.aws:micronaut-aws-function" // now version comes from AWS BOM
     implementation "io.micronaut:micronaut-jackson-databind"
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation "jakarta.annotation:jakarta.annotation-api"
