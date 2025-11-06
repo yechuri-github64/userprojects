@@ -1,0 +1,15 @@
+micronaut:
+  application:
+    name: akhil-randomnumber
+server:
+  port: 8080
+datasources:
+  postgres:
+    url: jdbc:postgresql://localhost:5432/akhildb
+    username: akhil
+    password: secret
+  mongodb:
+    uri: mongodb://localhost:27017/akhildb
+logging:
+  level:
+    root: INFO
