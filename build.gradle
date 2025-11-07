@@ -12,7 +12,7 @@ repositories {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -22,19 +22,21 @@ micronaut {
 }
 
 dependencies {
-    // Align AWS Micronaut dependencies
+    // Use Micronaut AWS BOM to align AWS dependencies
     implementation(platform("io.micronaut.aws:micronaut-aws-bom:4.6.1"))
 
-    // AWS Lambda runtime integration
+    // Lambda + AWS core libraries
+    implementation("io.micronaut.aws:micronaut-function-aws-api-proxy")
     implementation("io.micronaut.aws:micronaut-aws-lambda")
 
-    // HTTP Client (optional, if you want to call other APIs)
+    // Core Micronaut
     implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-runtime")
 
     // Logging
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    // Annotation processing for Micronaut DI
+    // Annotation processor for DI
     annotationProcessor("io.micronaut:micronaut-inject-java")
 }
 
