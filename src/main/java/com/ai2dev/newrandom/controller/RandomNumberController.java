@@ -1,0 +1,1 @@
+package com.ai2dev.newrandom.controller;\n\nimport io.micronaut.http.annotation.Controller;\nimport io.micronaut.http.annotation.Get;\nimport java.util.Random;\n\n@Controller("random")\npublic class RandomNumberController {\n  private final Random random = new Random();\n\n  @Get\n  public int getRandomNumber() {\n    return 20000 + random.nextInt(5000);\n  }\n}

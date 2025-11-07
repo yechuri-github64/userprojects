@@ -1,0 +1,1 @@
+<configuration>\n  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">\n    <encoder>\n      <pattern>%d{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>\n    </encoder>\n  </appender>\n  <root level="INFO">\n    <appender-ref ref="STDOUT"/>\n  </root>\n</configuration>

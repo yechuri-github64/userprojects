@@ -1,0 +1,1 @@
+package com.ai2dev.newrandom.service;\n\nimport jakarta.inject.Singleton;\nimport java.util.Random;\n\n@Singleton\npublic class RandomNumberService {\n  private final Random random = new Random();\n\n  public int generateRandomNumber() {\n    return 20000 + random.nextInt(5000);\n  }\n}
