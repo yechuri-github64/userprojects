@@ -21,10 +21,6 @@ micronaut {
 
 dependencies {
   implementation platform('io.micronaut.aws:micronaut-aws-bom:4.6.1')
-  implementation 'io.micronaut.platform:micronaut-platform:4.6.1'
-  implementation 'io.micronaut.inject:micronaut-inject-java'
-  implementation 'io.micronaut.http:micronaut-http-client'
-  implementation 'io.micronaut.aws:micronaut-aws-lambda'
   testImplementation('io.micronaut.test:micronaut-test-junit5')
 }
 
