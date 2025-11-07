@@ -22,21 +22,22 @@ micronaut {
 }
 
 dependencies {
-    // Use Micronaut AWS BOM to align AWS dependencies
-    implementation(platform("io.micronaut.aws:micronaut-aws-bom:4.6.1"))
+    // Ensure BOM versions are enforced globally
+    implementation(enforcedPlatform("io.micronaut.platform:micronaut-platform:4.6.1"))
+    implementation(enforcedPlatform("io.micronaut.aws:micronaut-aws-bom:4.6.1"))
 
-    // Lambda + AWS core libraries
-    implementation("io.micronaut.aws:micronaut-function-aws-api-proxy")
+    // AWS Lambda & function API
     implementation("io.micronaut.aws:micronaut-aws-lambda")
+    implementation("io.micronaut.aws:micronaut-function-aws-api-proxy")
 
-    // Core Micronaut
-    implementation("io.micronaut:micronaut-http-client")
+    // Core Micronaut dependencies
     implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut:micronaut-http-client")
 
     // Logging
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    // Annotation processor for DI
+    // Annotation processor
     annotationProcessor("io.micronaut:micronaut-inject-java")
 }
 
