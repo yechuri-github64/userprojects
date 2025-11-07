@@ -22,15 +22,14 @@ micronaut {
 }
 
 dependencies {
-    // Ensure BOM versions are enforced globally
-    implementation(enforcedPlatform("io.micronaut.platform:micronaut-platform:4.6.1"))
-    implementation(enforcedPlatform("io.micronaut.aws:micronaut-aws-bom:4.6.1"))
+    // Only the main Micronaut Platform BOM
+    implementation(platform("io.micronaut.platform:micronaut-platform:4.6.1"))
 
-    // AWS Lambda & function API
+    // AWS Lambda libraries (version inherited from the platform)
     implementation("io.micronaut.aws:micronaut-aws-lambda")
     implementation("io.micronaut.aws:micronaut-function-aws-api-proxy")
 
-    // Core Micronaut dependencies
+    // Core Micronaut modules
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-http-client")
 
