@@ -1,26 +1,43 @@
 plugins {
-  id 'java'
-  id 'io.micronaut.application' version '4.6.1'
-  id 'com.gradleup.shadow' version '8.3.9'
+    id "io.micronaut.application" version "4.6.1"
+    id "io.micronaut.cloud" version "4.6.1"
+    id "com.gradleup.shadow" version "8.3.9"
 }
+
+group = "com.ai2dev"
+version = "0.1"
 
 repositories {
     mavenCentral()
-   // maven { url "https://repo.gradle.org/gradle/libs-releases" }
+    maven { url "https://repo.gradle.org/gradle/libs-releases" }
 }
 
 micronaut {
-  version = '4.6.1'
-  runtime('lambda_java')
-  processResources {
-    filesMatching('application.yml') {
-      expand(project.properties)
-    }
-  }
+    version = "4.6.1"
+    runtime("lambda_java")
 }
 
 dependencies {
-  implementation platform('io.micronaut.aws:micronaut-aws-bom:4.6.1')
-  testImplementation('io.micronaut.test:micronaut-test-junit5')
+    implementation("io.micronaut.platform:micronaut-platform:4.6.1")
+    implementation(platform("io.micronaut.aws:micronaut-aws-bom:4.6.1"))
+    implementation("io.micronaut.aws:micronaut-aws-lambda")
+    implementation("io.micronaut:micronaut-http-client")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    annotationProcessor("io.micronaut:micronaut-inject-java")
+}
+
+application {
+    mainClass = "com.ai2dev.randomnumber.Application"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+shadowJar {
+    archiveBaseName.set("lambda")
+    archiveClassifier.set("")
+    archiveVersion.set("0.1")
+    mergeServiceFiles()
 }
 
