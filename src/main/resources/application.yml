@@ -1,0 +1,13 @@
+micronaut: {
+  application: {
+    name: tempnumber
+  },
+  server: {
+    port: 8080
+  },
+  aws: {
+    lambda: {
+      runtime: "java8"
+    }
+  }
+}

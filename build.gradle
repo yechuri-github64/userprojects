@@ -1,0 +1,28 @@
+plugins {
+  id 'java'
+  id 'io.micronaut.application' version '4.6.1'
+  id 'com.gradleup.shadow' version '8.3.9'
+}
+
+micronaut {
+  version = '4.6.1'
+  runtime('lambda_java')
+  processResources {
+    filesMatching('application.yml') {
+      expand(project.properties)
+    }
+  }
+}
+
+dependencies {
+  implementation platform('io.micronaut.aws:micronaut-aws-bom:4.6.1')
+  implementation 'io.micronaut.platform:micronaut-platform:4.6.1'
+  implementation 'io.micronaut.inject:micronaut-inject-java'
+  implementation 'io.micronaut.http:micronaut-http-client'
+  implementation 'io.micronaut.aws:micronaut-aws-lambda'
+  testImplementation('io.micronaut.test:micronaut-test-junit5')
+}
+
+task shadowJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+  archiveClassifier.set('')
+}
