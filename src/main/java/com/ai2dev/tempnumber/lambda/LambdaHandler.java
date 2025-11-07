@@ -10,6 +10,9 @@ public class LambdaHandler implements RequestHandler<Object, Integer> {
   public LambdaHandler(NumberService numberService) {
     this.numberService = numberService;
   }
+   public LambdaHandler() {
+        this.numberService = new NumberService();
+    }
 
   @Override
   public Integer handleRequest(Object input, Context context) {
