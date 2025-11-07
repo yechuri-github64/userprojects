@@ -1,0 +1,23 @@
+plugins {
+  id "io.micronaut.build.architecture" version "4.6.1"
+  id "io.micronaut.application" version "4.6.1"
+  id "com.gradleup.shadow" version "8.3.9"
+} 
+
+micronaut {
+  version = "4.6.1"
+  runtime("lambda_java")
+  testRuntime("junit5")
+  processing {
+    incremental true
+    annotations("com.ai2dev.newtempnum")
+  }
+}
+
+dependencies {
+  implementation("io.micronaut.platform:micronaut-platform:4.6.1")
+  implementation(platform("io.micronaut.aws:micronaut-aws-bom:4.6.1"))
+  implementation("io.micronaut.aws:micronaut-aws-lambda")
+  implementation("com.fasterxml.jackson.module:jackson-module-parameter-names")
+  testImplementation("io.micronaut.test:micronaut-test-junit5")
+}

@@ -1,0 +1,13 @@
+micronaut: {
+  application: {
+    name: new-temp-num
+  },
+  server: {
+    port: 8080
+  },
+  aws: {
+    lambda: {
+      enabled: true
+    }
+  }
+}
