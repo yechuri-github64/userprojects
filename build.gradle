@@ -23,6 +23,3 @@ dependencies {
   testImplementation('io.micronaut.test:micronaut-test-junit5')
 }
 
-task shadowJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-  archiveClassifier.set('')
-}
