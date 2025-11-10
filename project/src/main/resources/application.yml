@@ -1,0 +1,8 @@
+micronaut:
+  server:
+    port: 8080
+
+logging:
+  level:
+    ROOT: INFO
+
