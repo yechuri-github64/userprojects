@@ -1,0 +1,36 @@
+# --- Ignore build output ---
+build/
+out/
+bin/
+
+# --- Gradle caches ---
+.gradle/
+.gradle-cache/
+.gradle/7.*
+.gradle/8.*
+
+# --- IDE & editor configs ---
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# --- OS & temp files ---
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# --- Version control ---
+.git/
+.gitignore
+.gitattributes
+
+# --- Docker itself ---
+Dockerfile
+.dockerignore
+
+# --- Misc ---
+**/node_modules/
+**/target/
