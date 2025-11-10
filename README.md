@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Project: Accounts Lambda (MySQL downstream)
 
 Overview:
@@ -37,3 +38,39 @@ Install:
 
 Deploy:
 - Package and deploy to AWS Lambda; ensure environment variables are configured to connect to your MySQL instance.
+=======
+AWS Lambda Accounts Manager
+
+This Lambda provides CRUD operations for an accounts table in a MySQL database. It follows a clean architecture with handlers and services.
+
+Environment variables (set in Lambda or .env during local development):
+- MySQL_HOST
+- MySQL_USER
+- MySQL_PASSWORD
+- MySQL_DATABASE
+
+API routes (API Gateway proxy expected):
+- GET /accounts -> list all accounts
+- GET /accounts/{id} -> get account by id
+- POST /accounts -> create multiple accounts (body: JSON array of objects with name, email, address)
+- PUT /accounts/{id} -> update one account (body: JSON object with any of name, email, address)
+- DELETE /accounts/{id} -> delete account
+
+Notes:
+- Uses mysql2/promise
+- Input body is parsed with JSON.parse and responses use JSON.stringify
+- Create accepts multiple accounts in one request and uses a multi-row insert
+- Update modifies one account at a time
+
+Deploy:
+1. Install dependencies: npm install
+2. Package and deploy the Lambda with your preferred method, ensure environment variables are set
+
+Database table example:
+CREATE TABLE accounts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  address TEXT
+);
+>>>>>>> bd324d8 (Automated commit on branch accounts-management-lambda from AI2DEV)

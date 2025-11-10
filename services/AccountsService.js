@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const db = require('./db');
 
 const table = 'accounts';
@@ -47,10 +48,64 @@ const createAccounts = async (accounts) => {
   } catch (err) {
     await conn.rollback();
     console.log('createAccounts error:', err);
+=======
+const DbClient = require('./DbClient');
+
+async function listAccounts() {
+  try {
+    const rows = await DbClient.query('SELECT id, name, email, address FROM accounts', []);
+    return rows;
+  } catch (err) {
+    console.log('listAccounts error', err);
+    throw err;
+  }
+}
+
+async function getAccount(id) {
+  try {
+    const rows = await DbClient.query('SELECT id, name, email, address FROM accounts WHERE id = ?', [id]);
+    return rows[0] || null;
+  } catch (err) {
+    console.log('getAccount error', err);
+    throw err;
+  }
+}
+
+async function createAccounts(accounts) {
+  if (!Array.isArray(accounts) || accounts.length === 0) return [];
+  const values = [];
+  for (const a of accounts) {
+    const name = a.name || null;
+    const email = a.email || null;
+    const address = a.address || null;
+    values.push([name, email, address]);
+  }
+
+  const conn = await DbClient.getConnection();
+  try {
+    await conn.beginTransaction();
+    const placeholders = values.map(() => '(?, ?, ?)').join(', ');
+    const flat = values.flat();
+    const [result] = await conn.execute(
+      `INSERT INTO accounts (name, email, address) VALUES ${placeholders}`,
+      flat
+    );
+    await conn.commit();
+    const insertedIds = [];
+    let insertId = result.insertId;
+    for (let i = 0; i < result.affectedRows; i++) {
+      insertedIds.push(insertId + i);
+    }
+    return insertedIds;
+  } catch (err) {
+    await conn.rollback();
+    console.log('createAccounts error', err);
+>>>>>>> bd324d8 (Automated commit on branch accounts-management-lambda from AI2DEV)
     throw err;
   } finally {
     conn.release();
   }
+<<<<<<< HEAD
 };
 
 const updateAccount = async (id, data) => {
@@ -90,3 +145,40 @@ const deleteAccount = async (id) => {
 };
 
 module.exports = { getAllAccounts, getAccount, createAccounts, updateAccount, deleteAccount };
+=======
+}
+
+async function updateAccount(id, data) {
+  const allowed = ['name', 'email', 'address'];
+  const fields = [];
+  const params = [];
+  for (const key of allowed) {
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      fields.push(`${key} = ?`);
+      params.push(data[key]);
+    }
+  }
+  if (fields.length === 0) return false;
+  params.push(id);
+  const sql = `UPDATE accounts SET ${fields.join(', ')} WHERE id = ?`;
+  try {
+    const result = await DbClient.query(sql, params);
+    return result.affectedRows && result.affectedRows > 0;
+  } catch (err) {
+    console.log('updateAccount error', err);
+    throw err;
+  }
+}
+
+async function deleteAccount(id) {
+  try {
+    const result = await DbClient.query('DELETE FROM accounts WHERE id = ?', [id]);
+    return result.affectedRows && result.affectedRows > 0;
+  } catch (err) {
+    console.log('deleteAccount error', err);
+    throw err;
+  }
+}
+
+module.exports = { listAccounts, getAccount, createAccounts, updateAccount, deleteAccount };
+>>>>>>> bd324d8 (Automated commit on branch accounts-management-lambda from AI2DEV)
