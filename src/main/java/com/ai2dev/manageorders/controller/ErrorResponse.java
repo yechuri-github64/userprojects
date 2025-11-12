@@ -1,0 +1,1 @@
+package com.ai2dev.manageorders.controller;\n\npublic class ErrorResponse {\n    private String message;\n\n    public ErrorResponse(String message) {\n        this.message = message;\n    }\n\n    public String getMessage() {\n        return message;\n    }\n}

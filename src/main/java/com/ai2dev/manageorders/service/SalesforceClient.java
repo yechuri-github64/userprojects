@@ -1,0 +1,1 @@
+package com.ai2dev.manageorders.service;\n\nimport io.micronaut.http.client.annotation.Client;\nimport io.micronaut.http.annotation.Get;\nimport io.micronaut.http.annotation.PathVariable;\n\n@Client("https://api.salesforce.com")\npublic interface SalesforceClient {\n    @Get("/orders/{id}")\n    Order getOrderFromSalesforce(@PathVariable String id);\n}

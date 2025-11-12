@@ -1,0 +1,1 @@
+package com.ai2dev.manageorders.model;\n\npublic class Order {\n    private String id;\n    private String description;\n\n    public Order(String id, String description) {\n        this.id = id;\n        this.description = description;\n    }\n\n    public String getId() {\n        return id;\n    }\n\n    public String getDescription() {\n        return description;\n    }\n}

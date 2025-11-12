@@ -1,0 +1,1 @@
+micronaut: {\n  application: {\n    name: manageorders\n  }\n  server: {\n    port: 8080\n  }\n  jackson: {\n    serialization: {\n      fail-on-empty-beans: false\n    }\n  }\n  salesforce: {\n    client-id: "your-client-id"\n    client-secret: "your-client-secret"\n  }\n}
