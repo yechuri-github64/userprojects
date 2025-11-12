@@ -1,0 +1,14 @@
+{
+  "name": "salesforce-order-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda to create Order records in Salesforce",
+  "main": "index.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.0"
+  },
+  "license": "MIT"
+}
