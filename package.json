@@ -1,0 +1,12 @@
+{
+  "name": "orders-lambda",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "jsforce": "^2.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "engines": {
+    "node": "14.x || 16.x || 18.x"
+  }
+}
