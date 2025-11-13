@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "jsforce": "^2.0.0",
+    "jsforce": "^1.11.0",
     "dotenv": "^16.0.0"
   }
 }
