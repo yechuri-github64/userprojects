@@ -1,0 +1,9 @@
+micronaut:
+  application:
+    name: hellojava
+
+salesforce:
+  clientId: "your-client-id"
+  clientSecret: "your-client-secret"
+  username: "your-username"
+  password: "your-password"
