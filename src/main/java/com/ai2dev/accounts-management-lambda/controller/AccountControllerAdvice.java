@@ -1,0 +1,3 @@
+package com.ai2dev.accountsmanagementlambda.controller; import io.micronaut.http.HttpResponse; import io.micronaut.http.annotation.ControllerAdvice; import io.micronaut.http.annotation.Error; @ControllerAdvice
+public class AccountControllerAdvice { @Error (exception = Exception.class) public HttpResponse<ErrorResponse> handleException (Exception e) { return HttpResponse.serverError (new ErrorResponse (e.getMessage (), 500) ); }
+}
