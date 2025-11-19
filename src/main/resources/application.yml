@@ -1,0 +1,12 @@
+datasource:
+  url: jdbc:mysql://localhost:3306/accounts_db
+  username: root
+  password: password
+
+micronaut:
+  application:
+    name: accounts-management-lambda
+
+logging:
+  level:
+    ROOT: INFO
