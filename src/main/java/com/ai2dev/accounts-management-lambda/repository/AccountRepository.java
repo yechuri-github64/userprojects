@@ -1,0 +1,10 @@
+package com.ai2dev.accountsmanagementlambda.repository;
+
+import com.ai2dev.accountsmanagementlambda.model.Account;
+import io.micronaut.data.annotation.Repository;
+import io.micronaut.data.repository.CrudRepository;
+
+@Repository
+public interface AccountRepository extends CrudRepository<Account, Long> {
+
+}

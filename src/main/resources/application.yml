@@ -1,0 +1,12 @@
+datasource:
+  url: jdbc:mysql://161.97.137.17:3306/orders_management
+  username: admin_orders
+  password: "Test@123456!"
+
+micronaut:
+  application:
+    name: accounts-management-lambda
+
+logging:
+  level:
+    ROOT: INFO
