@@ -24,8 +24,8 @@ var app = builder.Build();
 app.MapControllers();
 
 // Ensure application listens on configured port (default 8080)
-var port = builder.Configuration.GetSection("SalesforceSettings").GetValue<int?>("Port") ?? 8080;
-app.Urls.Clear();
-app.Urls.Add($"http://0.0.0.0:{port}");
+//var port = builder.Configuration.GetSection("SalesforceSettings").GetValue<int?>("Port") ?? 8080;
+//app.Urls.Clear();
+//app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();
