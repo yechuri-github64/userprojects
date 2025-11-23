@@ -1,0 +1,14 @@
+{
+  "name": "salesforce-order-update-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda to update Salesforce Order by Id",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jsforce": "^2.0.0"
+  },
+  "engines": {
+    "node": "14.x || 16.x || 18.x"
+  }
+}
