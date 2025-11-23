@@ -1,0 +1,11 @@
+{
+  "name": "salesforce-order-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda to fetch Salesforce Order by Id",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "jsforce": "^2.0.0"
+  }
+}
