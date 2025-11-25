@@ -1,5 +1,5 @@
 {
-  "function-handler": "TestMyCardLambda::TestMyCardLambda.Function::test-my-card",
+  "function-handler": "TestMyCardLambda::TestMyCardLambda.Function::TestMyCard",
   "framework": "net8.0",
-  "function-name": "test-my-card"
+  "function-name": "TestMyCard"
 }
