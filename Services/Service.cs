@@ -26,7 +26,7 @@ namespace CreaterailcardLambda.Services
             builder.MapEnum<CreaterailcardLambda.Models.CardholderType>("cardholder_type_enum");
             await using var dataSource = builder.Build();
 
-            await using var conn = await dataSource.CreateConnectionAsync();
+            await using var conn = await dataSource.OpenConnectionAsync();
             await conn.OpenAsync();
 
             await using var tx = await conn.BeginTransactionAsync();
