@@ -27,7 +27,7 @@ namespace CreaterailcardLambda.Services
             await using var dataSource = builder.Build();
 
             await using var conn = await dataSource.OpenConnectionAsync();
-            await conn.OpenAsync();
+            //await conn.OpenAsync();
 
             await using var tx = await conn.BeginTransactionAsync();
             try
