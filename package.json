@@ -1,0 +1,20 @@
+{
+ "name": "todolist-azure-functions",
+ "version": "1.0.0",
+ "private": true,
+ "type": "commonjs",
+ "engines": {
+ "node": ">=16"
+ },
+ "scripts": {
+ "start": "node src/express/server.js",
+ "start:functions": "func start",
+ "lint": "echo "No lint configured""
+ },
+ "dependencies": {
+ "@azure/functions": "^4.0.0",
+ "express": "^4.18.2",
+ "body-parser": "^1.20.2",
+ "mysql2": "^3.0.0"
+ }
+}
