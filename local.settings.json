@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+    "SF_LOGIN_URL": "",
+    "SF_USERNAME": "",
+    "SF_PASSWORD": "",
+    "SF_TOKEN": "",
+    "SF_CLIENT_ID": "",
+    "SF_CLIENT_SECRET": ""
+  }
+}
