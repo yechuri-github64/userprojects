@@ -95,8 +95,10 @@ namespace TestfromdocspostgresqlLambda.Services
                     // photo name
                     if (string.IsNullOrEmpty(ch.cardholderPhotoName) || ch.cardholderPhotoName.Length > 100)
                         errors.Add("cardholderPhotoName is required and max length 100.");
-                    else if (!Regex.IsMatch(ch.cardholderPhotoName, "^(?!.*[×÷ˇ˘μ])[A-Za-z0-9À-ž _.\\-()\\[\]',&+#]+$"))
-                        errors.Add("cardholderPhotoName contains invalid characters.");
+                    else if (!Regex.IsMatch(ch.cardholderPhotoName, @"^(?!.*[×÷ˇ˘μ])[A-Za-z0-9À-ž _.\-()\[\]',&+#]+$"))
+                            {
+                                errors.Add("cardholderPhotoName contains invalid characters.");
+                            }
 
                     // image: one of three
                     int provided = 0;
