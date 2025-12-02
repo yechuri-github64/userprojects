@@ -1,0 +1,16 @@
+{
+  "name": "azure-functions-salesforce-accounts",
+  "version": "1.0.0",
+  "description": "Azure Functions (Node.js) to manage Salesforce Account records",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "jsforce": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
