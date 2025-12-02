@@ -1,5 +1,7 @@
 const path = require('path');
 
+// Note: we mock the salesforce connection helper via require.cache below
+
 describe('getItem function', () => {
   const functionPath = path.resolve(__dirname, '../src/functions/getItem/index.js');
   const helperPath = path.resolve(__dirname, '../src/helpers/salesforce/connection.js');
