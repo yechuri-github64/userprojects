@@ -1,0 +1,25 @@
+{
+  "queryparameters": {
+    "name": "Acme Corp"
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "accounts": [
+      {
+        "Id": "0015g00000XXXXXAA1",
+        "Name": "Acme Corp",
+        "Phone": "555-0100",
+        "Type": "Customer",
+        "Industry": "Manufacturing",
+        "BillingStreet": "100 Main St",
+        "BillingCity": "Metropolis",
+        "BillingState": "CA",
+        "BillingPostalCode": "90210",
+        "BillingCountry": "USA",
+        "CreatedDate": "2025-10-01T12:34:56.000Z",
+        "LastModifiedDate": "2025-10-02T08:00:00.000Z"
+      }
+    ]
+  }
+}

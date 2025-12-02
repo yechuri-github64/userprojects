@@ -1,0 +1,14 @@
+{
+  "queryparameters": {
+    "Id": "0015g00000XXXXXAA2"
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "deleted": {
+      "id": "0015g00000XXXXXAA2",
+      "success": true,
+      "errors": []
+    }
+  }
+}

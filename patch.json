@@ -1,0 +1,18 @@
+{
+  "queryparameters": {
+    "Id": "0015g00000XXXXXAA1",
+    "fields": {
+      "Phone": "555-0111",
+      "Type": "Partner"
+    }
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "updated": {
+      "id": "0015g00000XXXXXAA1",
+      "success": true,
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "queryparameters": {
+    "accounts": [
+      {
+        "Name": "Acme Corp",
+        "Phone": "555-0100",
+        "Type": "Customer",
+        "Industry": "Manufacturing",
+        "BillingStreet": "100 Main St",
+        "BillingCity": "Metropolis",
+        "BillingState": "CA",
+        "BillingPostalCode": "90210",
+        "BillingCountry": "USA",
+        "ExternalId": "EXT-12345"
+      },
+      {
+        "Name": "Beta LLC",
+        "Phone": "555-0200",
+        "Type": "Prospect",
+        "Industry": "Technology",
+        "BillingStreet": "200 Side St",
+        "BillingCity": "Gotham",
+        "BillingState": "NY",
+        "BillingPostalCode": "10001",
+        "BillingCountry": "USA",
+        "ExternalId": "EXT-67890"
+      }
+    ]
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "created": [
+      {
+        "id": "0015g00000XXXXXAA1",
+        "success": true,
+        "errors": []
+      },
+      {
+        "id": "0015g00000XXXXXAA2",
+        "success": true,
+        "errors": []
+      }
+    ]
+  }
+}
