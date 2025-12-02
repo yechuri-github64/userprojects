@@ -4,10 +4,10 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "SF_LOGIN_URL": "https://login.salesforce.com",
-    "SF_USERNAME": "<your-username>",
-    "SF_PASSWORD": "<your-password>",
-    "SF_TOKEN": "<your-security-token>",
-    "SF_CLIENT_ID": "<your-client-id>",
-    "SF_CLIENT_SECRET": "<your-client-secret>"
+    "SF_USERNAME": "sftest602@agentforce.com",
+    "SF_PASSWORD": "sf1test@890",
+    "SF_TOKEN": "2WZBrgHCV8XHUjLwPu429fe3",
+    "SF_CLIENT_ID": "3MVG97L7PWbPq6UyZnWfYfHgfWF1O7aUOrpninWwDPItEu1WbZ062kIyq8KakIOesvtsinN4FFML.jw8BozHm",
+    "SF_CLIENT_SECRET": "5D7D37E43BC575AD5656C2AEBB7B6BD32BEE2FBB6C3C167E116AF935C9E0A5AA"
   }
 }
