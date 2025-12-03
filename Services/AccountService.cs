@@ -84,14 +84,15 @@ namespace Services
  try
  {
  var sobj = new { Name = acc.Name, PersonEmail = acc.Email, BillingStreet = acc.Address };
- var createResult = await _forceClient.CreateAsync("Account", sobj);
+ var createResult = await _forceClient.CreateAsync<dynamic>("Account", sobj);
  // createResult typically contains id in "id" or "Id"
  string id = string.Empty;
  try
  {
  var json = JsonSerializer.Serialize(createResult);
  using var doc = JsonDocument.Parse(json);
- if (doc.RootElement.TryGetProperty("id", out var idProp) || doc.RootElement.TryGetProperty("Id", out idProp))
+ JsonElement idProp;
+ if (doc.RootElement.TryGetProperty("id", out idProp) || doc.RootElement.TryGetProperty("Id", out idProp))
  {
  id = idProp.GetString() ?? string.Empty;
  }
@@ -142,17 +143,17 @@ namespace Services
  {
  var json = JsonSerializer.Serialize(queryResult);
  using var doc = JsonDocument.Parse(json);
- if (doc.RootElement.TryGetProperty("records", out var records) && records.GetArrayLength() > 0)
+ if (doc.RootElement.TryGetProperty("records", out JsonElement records) && records.GetArrayLength() > 0)
  {
  var rec = records[0];
- var account = new Account
+ var retrievedAccount = new Account
  {
  Id = rec.GetProperty("Id").GetString() ?? string.Empty,
  Name = rec.TryGetProperty("Name", out var n) ? n.GetString() ?? string.Empty : string.Empty,
  Email = rec.TryGetProperty("PersonEmail", out var e) ? e.GetString() ?? string.Empty : string.Empty,
  Address = rec.TryGetProperty("BillingStreet", out var a) ? a.GetString() ?? string.Empty : string.Empty
  };
- return account;
+ return retrievedAccount;
  }
  }
  catch (Exception ex)
@@ -238,7 +239,7 @@ namespace Services
  {
  var json = JsonSerializer.Serialize(queryResult);
  using var doc = JsonDocument.Parse(json);
- if (doc.RootElement.TryGetProperty("records", out var records))
+ if (doc.RootElement.TryGetProperty("records", out JsonElement records))
  {
  foreach (var rec in records.EnumerateArray())
  {
