@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "SalesforceUsername": "sftest602@agentforce.com",
+    "SalesforcePassword": "sf1test@890",
+    "SalesforceSecurityToken": "2WZBrgHCV8XHUjLwPu429fe3",
+    "SalesforceLoginUrl": "https://login.salesforce.com",
+    "InstanceUrl": "https://orgfarm-0b7f8fa7ba-dev-ed.develop.my.salesforce.com",
+    "ClientId": "3MVG97L7PWbPq6UyZnWfYfHgfWF1O7aUOrpninWwDPItEu1WbZ062kIyq8KakIOesvtsinN4FFML.jw8BozHm",
+    "ClientSecret": "5D7D37E43BC575AD5656C2AEBB7B6BD32BEE2FBB6C3C167E116AF935C9E0A5AA",
+    "UseSandbox": "false"
+  }
+}
