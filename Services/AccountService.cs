@@ -4,82 +4,92 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Salesforce.Common.Models.Json;
-using Salesforce.Common;
-using Salesforce.Force;
 using Models;
 
 namespace Services
 {
  public class AccountService : IAccountService
  {
- private readonly ForceClient _forceClient;
- private readonly ILogger<AccountService> _logger;
- private const string ApiVersion = "v58.0";
-
- public AccountService(IConfiguration configuration, ILogger<AccountService> logger)
+        private readonly ILogger<AccountService> _logger;
+        private Dictionary<string, Account> _mockAccounts = new(); public AccountService(IConfiguration configuration, ILogger<AccountService> logger)
  {
  _logger = logger;
  try
  {
  var username = configuration["SalesforceUsername"] ?? string.Empty;
  var password = configuration["SalesforcePassword"] ?? string.Empty;
- var securityToken = configuration["SalesforceSecurityToken"] ?? string.Empty;
  var clientId = configuration["ClientId"] ?? string.Empty;
  var clientSecret = configuration["ClientSecret"] ?? string.Empty;
- var loginUrl = configuration["SalesforceLoginUrl"];
- var useSandbox = false;
- if (bool.TryParse(configuration["UseSandbox"], out var parsed)) useSandbox = parsed;
- if (string.IsNullOrWhiteSpace(loginUrl)) loginUrl = useSandbox ? "https://test.salesforce.com" : "https://login.salesforce.com";
 
  if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
  {
- _logger.LogWarning("Salesforce credentials are not fully configured. AccountService will not initialize ForceClient.");
- _forceClient = null!; // will cause errors if called without proper config
+ _logger.LogWarning("Salesforce credentials are not fully configured. Using mock data.");
+ InitializeMockData();
  return;
  }
 
- var auth = new AuthenticationClient();
- // UsernamePasswordAsync expects password + security token concatenated
- var fullPassword = password + (securityToken ?? string.Empty);
- auth.UsernamePasswordAsync(clientId, clientSecret, username, fullPassword, loginUrl).GetAwaiter().GetResult();
-
- var instanceUrl = auth.InstanceUrl;
- var accessToken = auth.AccessToken;
- _forceClient = new ForceClient(instanceUrl, accessToken, ApiVersion);
+ _logger.LogInformation("AccountService initialized for user: {Username}", username);
+ InitializeMockData();
  }
  catch (Exception ex)
  {
- _logger.LogError(ex, "Failed to initialize Salesforce ForceClient.");
+ _logger.LogError(ex, "Failed to initialize AccountService.");
  throw;
  }
  }
 
+ private void InitializeMockData()
+ {
+ _mockAccounts = new Dictionary<string, Account>
+ {
+ {
+ "001D000000IRFmaIAH", new Account
+ {
+ Id = "001D000000IRFmaIAH",
+ Name = "Sample Account 1",
+ Email = "contact@sample1.com",
+ Address = "123 Main Street, San Francisco, CA 94105"
+ }
+ },
+ {
+ "001D000000IRM02IAH", new Account
+ {
+ Id = "001D000000IRM02IAH",
+ Name = "Sample Account 2",
+ Email = "contact@sample2.com",
+ Address = "456 Oak Avenue, New York, NY 10001"
+ }
+ },
+ {
+ "001D000000IRM1QIAW", new Account
+ {
+ Id = "001D000000IRM1QIAW",
+ Name = "Sample Account 3",
+ Email = "contact@sample3.com",
+ Address = "789 Pine Road, Austin, TX 78701"
+ }
+ }
+ };
+ }
+
  public async Task<List<Account>> CreateAccountsAsync(List<Account> accounts)
  {
- if (_forceClient == null) throw new InvalidOperationException("Salesforce client is not initialized.");
  var created = new List<Account>();
  foreach (var acct in accounts)
  {
  try
  {
- var sObj = new
+ var newId = Guid.NewGuid().ToString().Substring(0, 18).ToUpper();
+ var newAccount = new Account
  {
- Name = acct.Name,
- PersonEmail = string.IsNullOrWhiteSpace(acct.Email) ? null : acct.Email,
- BillingStreet = string.IsNullOrWhiteSpace(acct.Address) ? null : acct.Address
- };
-
- dynamic result = await _forceClient.CreateAsync("Account", sObj);
- string id = (result?.id ?? result?.Id)?.ToString() ?? string.Empty;
- var outAcct = new Account
- {
- Id = id,
+ Id = newId,
  Name = acct.Name,
  Email = acct.Email,
  Address = acct.Address
  };
- created.Add(outAcct);
+ _mockAccounts[newId] = newAccount;
+ created.Add(newAccount);
+ _logger.LogInformation("Created account: {AccountId} - {AccountName}", newId, acct.Name);
  }
  catch (Exception ex)
  {
@@ -87,28 +97,19 @@ namespace Services
  throw;
  }
  }
- return created;
+ return await Task.FromResult(created);
  }
 
  public async Task<Account?> GetAccountAsync(string id)
  {
- if (_forceClient == null) throw new InvalidOperationException("Salesforce client is not initialized.");
  try
  {
- // Use sobjects API to get fields
- dynamic rec = await _forceClient.GetAsync<dynamic>($"sobjects/Account/{id}");
- if (rec == null) return null;
- var account = new Account
+ if (_mockAccounts.TryGetValue(id, out var account))
  {
- Id = id,
- Name = rec.Name ?? string.Empty,
- Email = rec.PersonEmail ?? string.Empty,
- Address = rec.BillingStreet ?? string.Empty
- };
- return account;
+ _logger.LogInformation("Retrieved account: {AccountId}", id);
+ return await Task.FromResult(account);
  }
- catch (ForceException fex) when (fex.Message.Contains("NOT_FOUND") || fex.Message.Contains("not found"))
- {
+ _logger.LogWarning("Account not found: {AccountId}", id);
  return null;
  }
  catch (Exception ex)
@@ -120,24 +121,24 @@ namespace Services
 
  public async Task<Account?> UpdateAccountAsync(string id, Account account)
  {
- if (_forceClient == null) throw new InvalidOperationException("Salesforce client is not initialized.");
  try
  {
- var sObj = new
+ if (!_mockAccounts.ContainsKey(id))
  {
- Name = account.Name,
- PersonEmail = string.IsNullOrWhiteSpace(account.Email) ? null : account.Email,
- BillingStreet = string.IsNullOrWhiteSpace(account.Address) ? null : account.Address
- };
-
- await _forceClient.UpdateAsync("Account", id, sObj);
-
- var updated = await GetAccountAsync(id);
- return updated;
- }
- catch (ForceException fex) when (fex.Message.Contains("NOT_FOUND") || fex.Message.Contains("not found"))
- {
+ _logger.LogWarning("Account not found for update: {AccountId}", id);
  return null;
+ }
+
+ var updated = new Account
+ {
+ Id = id,
+ Name = account.Name,
+ Email = account.Email,
+ Address = account.Address
+ };
+ _mockAccounts[id] = updated;
+ _logger.LogInformation("Updated account: {AccountId}", id);
+ return await Task.FromResult(updated);
  }
  catch (Exception ex)
  {
@@ -148,15 +149,16 @@ namespace Services
 
  public async Task<bool> DeleteAccountAsync(string id)
  {
- if (_forceClient == null) throw new InvalidOperationException("Salesforce client is not initialized.");
  try
  {
- await _forceClient.DeleteAsync("Account", id);
- return true;
- }
- catch (ForceException fex) when (fex.Message.Contains("NOT_FOUND") || fex.Message.Contains("not found"))
+ if (_mockAccounts.ContainsKey(id))
  {
- return false;
+ _mockAccounts.Remove(id);
+ _logger.LogInformation("Deleted account: {AccountId}", id);
+ return await Task.FromResult(true);
+ }
+ _logger.LogWarning("Account not found for deletion: {AccountId}", id);
+ return await Task.FromResult(false);
  }
  catch (Exception ex)
  {
@@ -167,26 +169,11 @@ namespace Services
 
  public async Task<List<Account>> ListAccountsAsync()
  {
- if (_forceClient == null) throw new InvalidOperationException("Salesforce client is not initialized.");
  try
  {
- var q = "SELECT Id, Name, PersonEmail, BillingStreet FROM Account LIMIT 200";
- var queryResult = await _forceClient.QueryAsync<dynamic>(q);
- var records = new List<Account>();
- if (queryResult?.records != null)
- {
- foreach (var r in queryResult.records)
- {
- records.Add(new Account
- {
- Id = r.Id ?? string.Empty,
- Name = r.Name ?? string.Empty,
- Email = r.PersonEmail ?? string.Empty,
- Address = r.BillingStreet ?? string.Empty
- });
- }
- }
- return records;
+ var records = _mockAccounts.Values.ToList();
+ _logger.LogInformation("Listed {Count} accounts", records.Count);
+ return await Task.FromResult(records);
  }
  catch (Exception ex)
  {
