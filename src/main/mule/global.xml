@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:api-platform-gw="http://www.mulesoft.org/schema/mule/api-platform-gw" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+
+ <configuration-properties doc:name="Config Properties" file="mule-properties-dev.yaml,mule-properties-test.yaml,mule-properties-prod.yaml" />
+
+ <!-- Global HTTP Request config to communicate with Salesforce REST API -->
+ <http:request-config name="Salesforce_HTTP_Request_Config" doc:name="Salesforce HTTP Request Config" host="${salesforce.host}" port="${salesforce.port}" protocol="https">
+ <http:request-connection poolMaxActive="100" responseTimeout="10000" />
+ </http:request-config>
+
+ <!-- Placeholder Salesforce Connector config (defined with secure properties) -->
+ <salesforce:config name="Salesforce_Config" doc:name="Salesforce Config" consumerKey="${sf.consumerKey}" consumerSecret="${secure::sf.consumerSecret}" username="${sf.username}" password="${secure::sf.password}" securityToken="${secure::sf.securityToken}" oauthType="username" apiVersion="${salesforce.apiVersion}" />
+
+ <!-- Global error handler -->
+ <error-handler name="GlobalErrorHandler">
+ <on-error-propagate enableNotifications="true" logException="true">
+ <set-variable variableName="errorInfo" value='{"type":"#[error.errorType]","message":"#[error.description default "Unexpected error"]","cause":"#[error.cause default ""]"}' />
+ <transform doc:name="Format Error">
+ <dw:transform-message doc:sample="">
+ <dw:set-payload>
+ <![CDATA[%dw 2.0
+output application/json
+---
+{
+ error: {
+ message: (vars.errorInfo.message default "An error occurred"),
+ type: (vars.errorInfo.type default "UNKNOWN"),
+ details: (error? map ((e, k) -> { (k): e }))
+ }
+}]]>
+ </dw:set-payload>
+ </dw:transform-message>
+ </transform>
+ <logger message="Error handled: #[payload]" level="ERROR" />
+ </on-error-propagate>
+ </error-handler>
+
+
+</mule>

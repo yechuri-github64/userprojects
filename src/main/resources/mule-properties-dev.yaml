@@ -1,0 +1,23 @@
+mule:
+  runtime: "4.9"
+  java: "4.9"
+http:
+  host: "0.0.0.0"
+  port: "8081"
+salesforce:
+  host: "login.salesforce.com"
+  port: "443"
+  apiVersion: "52.0"
+
+# Credentials must be referenced as secure:: when used in configs
+sf:
+  username: "${sf.username}"
+  consumerKey: "${sf.consumerKey}"
+  # The following entries are placeholders to indicate secure properties and MUST be provided via secure properties in runtime
+  consumerSecret: "${secure::sf.consumerSecret}"
+  password: "${secure::sf.password}"
+  securityToken: "${secure::sf.securityToken}"
+
+# Implementation file note
+implementation:
+  file: "accounts-impl.xml"

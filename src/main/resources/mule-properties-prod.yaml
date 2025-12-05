@@ -1,0 +1,18 @@
+mule:
+  runtime: "4.9"
+  java: "4.9"
+http:
+  host: "0.0.0.0"
+  port: "8080"
+salesforce:
+  host: "login.salesforce.com"
+  port: "443"
+  apiVersion: "52.0"
+sf:
+  username: "${sf.username}"
+  consumerKey: "${sf.consumerKey}"
+  consumerSecret: "${secure::sf.consumerSecret}"
+  password: "${secure::sf.password}"
+  securityToken: "${secure::sf.securityToken}"
+implementation:
+  file: "accounts-impl.xml"

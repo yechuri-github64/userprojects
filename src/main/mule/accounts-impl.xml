@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+
+ <error-handler ref="GlobalErrorHandler" />
+
+ <!-- Subflow to get Salesforce access token using username-password OAuth2 -->
+ <flow name="getSalesforceTokenFlow">
+ <set-variable value='{"grant_type":"password","client_id":"${sf.consumerKey}","client_secret":"${secure::sf.consumerSecret}","username":"${sf.username}","password":"${secure::sf.password}${secure::sf.securityToken}"}' variableName="tokenReq" />
+ <set-payload value='#[vars.tokenReq pluck ((value, key) -> (key ++ "=" ++ (value as String))) joinBy "&"]' />
+ <http:request config-ref="Salesforce_HTTP_Request_Config" path="/services/oauth2/token" method="POST" doc:name="Request OAuth Token">
+ <http:request-builder>
+ <http:header headerName="Content-Type" value="application/x-www-form-urlencoded" />
+ </http:request-builder>
+ </http:request>
+ <logger level="INFO" message="Salesforce token response: #[payload]" />
+ <transform doc:name="Extract Token">
+ <dw:transform-message>
+ <dw:set-payload>
+ <![CDATA[%dw 2.0
+output application/java
+---
+((payload as Map) default {}) containsKey("access_token") ? (payload.access_token) : (payload)
+]]>
+ </dw:set-payload>
+ </dw:transform-message>
+ </transform>
+ </flow>
+
+ <!-- List accounts -->
+ <flow name="listAccountsFlow">
+ <try>
+ <flow-ref name="getSalesforceTokenFlow" />
+ <set-variable variableName="sfToken" value="#[(payload as String)]" />
+ <http:request config-ref="Salesforce_HTTP_Request_Config" method="GET" path="/services/data/v${salesforce.apiVersion}/query" doc:name="SF Query" >
+ <http:request-builder>
+ <http:query-param paramName="q" value="SELECT+Id,Name,Email__c,Address__c+FROM+Account" />
+ <http:header headerName="Authorization" value="Bearer #[vars.sfToken]" />
+ </http:request-builder>
+ </http:request>
+ <logger level="INFO" message="SF query raw: #[payload]" />
+ <transform doc:name="Transform Response" source="payload">
+ <dw:transform-message>
+ <dw:input-payload mimeType="application/json" />
+ <dw:set-payload>
+ <![CDATA[%dw 2.0
+output application/json
+---
+(payload.records default []) map ((r) -> {
+ id: r.Id,
+ name: r.Name,
+ email: r.Email__c default null,
+ address: r.Address__c default null
+})
+]]>
+ </dw:set-payload>
+ </dw:transform-message>
+ </transform>
+ <set-property propertyName="http.status" value="200" />
+ <on-error-propagate>
+ <logger level="ERROR" message="Error in listAccountsFlow: #[error]" />
+ <transform doc:name="Format Error">
+ <dw:transform-message>
+ <dw:set-payload>
+ <![CDATA[%dw 2.0
+output application/json
+---
+{
+ error: {
+ message: error.description default "Failed to list accounts",
+ type: error.errorType
+ }
+}
+]]>
+ </dw:set-payload>
+ </dw:transform-message>
+ </transform>
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Get single account by id -->
+ <flow name="getAccountFlow">
+ <try>
+ <set-variable variableName="accountId" value="#[attributes.requestPath.splitBy('/')[-1]]" />
+ <flow-ref name="getSalesforceTokenFlow" />
+ <set-variable variableName="sfToken" value="#[(payload as String)]" />
+ <http:request config-ref="Salesforce_HTTP_Request_Config" method="GET" path="/services/data/v${salesforce.apiVersion}/sobjects/Account/#{vars.accountId}" doc:name="SF Get Account">
+ <http:request-builder>
+ <http:header headerName="Authorization" value="Bearer #[vars.sfToken]" />
+ </http:request-builder>
+ </http:request>
+ <transform doc:name="Transform Response">
+ <dw:transform-message>
+ <dw:input-payload mimeType="application/json" />
+ <dw:set-payload>
+ <![CDATA[%dw 2.0
+output application/json
+---
+{
+ id: payload.Id,
+ name: payload.Name,
+ email: payload.Email__c default null,
+ address: payload.Address__c default null
+}
+]]>
+ </dw:set-payload>
+ </dw:transform-message>
+ </transform>
+ <set-property propertyName="http.status" value="200" />
+ <on-error-propagate>
+ <logger level="ERROR" message="Error in getAccountFlow: #[error]" />
+ <transform doc:name="Format Error">
+ <dw:transform-message>
+ <dw:set-payload>
+ <![CDATA[%dw 2.0
+output application/json
+---
+{
+ error: {
+ message: error.description default "Failed to get account",
+ type: error.errorType
+ }
+}
+]]>
+ </dw:set-payload>
+ </dw:transform-message>
+ </transform>
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Create multiple accounts in one go -->
+ <flow name="createAccountsFlow">
+ <try>
+ <logger level="INFO" message="Create accounts request payload: #[payload]" />
+ <flow-ref name="getSalesforceTokenFlow" />
+ <set-variable variableName="sfToken" value="#[(payload as String)]" />
+ <transform doc:name="Prepare Backend Payload" source="payload" resource="classpath:dw/prepareBackendPayload.dwl" />
+ <set-variable variableName="createPayload" value="#[(payload)]" />
+ <!-- Use Composite sObjects API to create multiple records -->
+ <set-payload value='{"allOrNone": false, "records": vars.createPayload}' />
+ <http:request config-ref="Salesforce_HTTP_Request_Config" method="POST" path="/services/data/v${salesforce.apiVersion}/composite/sobjects" doc:name="SF Create Accounts">
+ <http:request-builder>
+ <http:header headerName="Authorization" value="Bearer #[vars.sfToken]" />
+ <http:header headerName="Content-Type" value="application/json" />
+ </http:request-builder>
+ </http:request>
+ <logger level="INFO" message="SF create response: #[payload]" />
+ <transform doc:name="Transform Response" resource="classpath:dw/transformResponse.dwl" />
+ <set-property propertyName="http.status" value="201" />
+ <on-error-propagate>
+ <logger level="ERROR" message="Error in createAccountsFlow: #[error]" />
+ <transform doc:name="Format Error" resource="classpath:dw/errorResponse.dwl" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Update single account -->
+ <flow name="updateAccountFlow">
+ <try>
+ <set-variable variableName="accountId" value="#[attributes.requestPath.splitBy('/')[-1]]" />
+ <logger level="INFO" message="Update payload: #[payload] for id: #[vars.accountId]" />
+ <flow-ref name="getSalesforceTokenFlow" />
+ <set-variable variableName="sfToken" value="#[(payload as String)]" />
+ <transform doc:name="Prepare Update Payload" resource="classpath:dw/prepareUpdatePayload.dwl" />
+ <!-- PATCH to sobject endpoint -->
+ <http:request config-ref="Salesforce_HTTP_Request_Config" method="PATCH" path="/services/data/v${salesforce.apiVersion}/sobjects/Account/#{vars.accountId}" doc:name="SF Update Account">
+ <http:request-builder>
+ <http:header headerName="Authorization" value="Bearer #[vars.sfToken]" />
+ <http:header headerName="Content-Type" value="application/json" />
+ </http:request-builder>
+ </http:request>
+ <set-payload value='{"id":"#[vars.accountId]","status":"updated"}' />
+ <set-property propertyName="http.status" value="200" />
+ <on-error-propagate>
+ <logger level="ERROR" message="Error in updateAccountFlow: #[error]" />
+ <transform doc:name="Format Error" resource="classpath:dw/errorResponse.dwl" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Delete account -->
+ <flow name="deleteAccountFlow">
+ <try>
+ <set-variable variableName="accountId" value="#[attributes.requestPath.splitBy('/')[-1]]" />
+ <flow-ref name="getSalesforceTokenFlow" />
+ <set-variable variableName="sfToken" value="#[(payload as String)]" />
+ <http:request config-ref="Salesforce_HTTP_Request_Config" method="DELETE" path="/services/data/v${salesforce.apiVersion}/sobjects/Account/#{vars.accountId}" doc:name="SF Delete Account">
+ <http:request-builder>
+ <http:header headerName="Authorization" value="Bearer #[vars.sfToken]" />
+ </http:request-builder>
+ </http:request>
+ <set-payload value='{"id":"#[vars.accountId]","status":"deleted"}' />
+ <set-property propertyName="http.status" value="200" />
+ <on-error-propagate>
+ <logger level="ERROR" message="Error in deleteAccountFlow: #[error]" />
+ <transform doc:name="Format Error" resource="classpath:dw/errorResponse.dwl" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+
+</mule>

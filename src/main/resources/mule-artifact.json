@@ -1,0 +1,10 @@
+{
+  "minMuleVersion": "4.9.0",
+  "secureProperties": ["sf.password", "sf.consumerSecret", "sf.securityToken"],
+  "name": "accounts-salesforce-app",
+  "classLoaderModelLoaderDescriptor":
+    {
+      "loaderClass": "org.mule.runtime.module.deployment.loader.MuleRepositoryClassLoaderModelLoader",
+      "exportedPackages": ["org.mule.runtime.api.*"],
+    },
+}
