@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:sfdc="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+
+ <flow name="get-accounts-impl">
+ <error-handler>
+ <on-error-propagate type="ANY" doc:name="Global Error Handler">
+ <set-variable value="#[error.description]" variableName="errorMessage" />
+ <set-variable value="#[error.errorType]" variableName="errorType" />
+ <set-variable value="#[error]" variableName="errorDetail" />
+ <dw:transform-message resource="classpath:dw/errorResponse.dwl" doc:name="Error Response" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </error-handler>
+
+ <sfdc:query config-ref="Salesforce_Config" query="SELECT Id, Name, Email__c, Address__c FROM Account" doc:name="Query Accounts" />
+ <dw:transform-message resource="classpath:dw/transformResponse.dwl" doc:name="Transform Response" />
+ <set-property propertyName="http.status" value="200" />
+ </flow>
+
+ <flow name="create-accounts-impl">
+ <error-handler>
+ <on-error-propagate type="ANY" doc:name="Create Error Handler">
+ <set-variable value="#[error.description]" variableName="errorMessage" />
+ <set-variable value="#[error.errorType]" variableName="errorType" />
+ <set-variable value="#[error]" variableName="errorDetail" />
+ <dw:transform-message resource="classpath:dw/errorResponse.dwl" doc:name="Error Response" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </error-handler>
+
+ <dw:transform-message resource="classpath:dw/prepareBackendPayload.dwl" doc:name="Prepare Backend Payload" />
+ <sfdc:create config-ref="Salesforce_Config" type="Account" objects="#[(payload)]" doc:name="Create Accounts" />
+ <dw:transform-message resource="classpath:dw/transformResponse.dwl" doc:name="Transform Create Response" />
+ <set-property propertyName="http.status" value="201" />
+ </flow>
+
+ <flow name="get-account-by-id-impl">
+ <error-handler>
+ <on-error-propagate type="ANY" doc:name="Get By Id Error Handler">
+ <set-variable value="#[error.description]" variableName="errorMessage" />
+ <set-variable value="#[error.errorType]" variableName="errorType" />
+ <set-variable value="#[error]" variableName="errorDetail" />
+ <dw:transform-message resource="classpath:dw/errorResponse.dwl" doc:name="Error Response" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </error-handler>
+
+ <sfdc:query config-ref="Salesforce_Config" query="#['SELECT Id, Name, Email__c, Address__c FROM Account WHERE Id = \'" ++ attributes.uriParams.id ++ "\'']" doc:name="Query Account By Id" />
+ <dw:transform-message resource="classpath:dw/transformResponse.dwl" doc:name="Transform Single Response" />
+ <set-property propertyName="http.status" value="200" />
+ </flow>
+
+ <flow name="update-account-impl">
+ <error-handler>
+ <on-error-propagate type="ANY" doc:name="Update Error Handler">
+ <set-variable value="#[error.description]" variableName="errorMessage" />
+ <set-variable value="#[error.errorType]" variableName="errorType" />
+ <set-variable value="#[error]" variableName="errorDetail" />
+ <dw:transform-message resource="classpath:dw/errorResponse.dwl" doc:name="Error Response" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </error-handler>
+
+ <set-variable variableName="incoming" value="#[(payload default {}) ++ { id: attributes.uriParams.id }]" />
+ <dw:transform-message doc:name="Prepare Update Payload" resource="classpath:dw/prepareUpdatePayload.dwl" />
+ <sfdc:update config-ref="Salesforce_Config" objects="#[(payload)]" doc:name="Update Account" />
+ <dw:transform-message resource="classpath:dw/transformResponse.dwl" doc:name="Transform Update Response" />
+ <set-property propertyName="http.status" value="200" />
+ </flow>
+
+ <flow name="delete-account-impl">
+ <error-handler>
+ <on-error-propagate type="ANY" doc:name="Delete Error Handler">
+ <set-variable value="#[error.description]" variableName="errorMessage" />
+ <set-variable value="#[error.errorType]" variableName="errorType" />
+ <set-variable value="#[error]" variableName="errorDetail" />
+ <dw:transform-message resource="classpath:dw/errorResponse.dwl" doc:name="Error Response" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </error-handler>
+
+ <sfdc:delete config-ref="Salesforce_Config" objects="#[[attributes.uriParams.id]]" doc:name="Delete Account" />
+ <set-payload value="" />
+ <set-property propertyName="http.status" value="204" />
+ </flow>
+
+
+</mule>

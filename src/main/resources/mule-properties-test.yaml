@@ -1,0 +1,15 @@
+mule:
+  runtime: "4.9"
+  javaCompatibility: "4.9"
+sf:
+  username: ""
+  password: ""
+  securityToken: ""
+  loginUrl: "https://test.salesforce.com"
+http:
+  host: "0.0.0.0"
+  port: "8082"
+  basePath: ""
+api:
+  name: "accounts-api-test"
+notes: "Implementation is in accounts-impl.xml"

@@ -1,0 +1,5 @@
+{
+  "minMuleVersion": "4.9",
+  "secureProperties": ["sf.password", "sf.securityToken", "sf.username"],
+  "configs": ["global.xml", "api.xml", "accounts-impl.xml"],
+}
