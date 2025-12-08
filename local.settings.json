@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "FUNCTIONS_WORKER_RUNTIME_VERSION": "8",
+    "Salesforce:ClientId": "YOUR_SF_CLIENT_ID",
+    "Salesforce:ClientSecret": "YOUR_SF_CLIENT_SECRET",
+    "Salesforce:Username": "YOUR_SF_USERNAME",
+    "Salesforce:Password": "YOUR_SF_PASSWORD_WITH_SECURITY_TOKEN",
+    "Salesforce:TokenUrl": "https://login.salesforce.com/services/oauth2/token",
+    "Salesforce:ApiVersion": "v56.0",
+    "Postgres:ConnectionString": "Host=localhost;Port=5432;Database=logsdb;Username=postgres;Password=yourpassword"
+  }
+}
