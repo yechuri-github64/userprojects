@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:http="http://www.mulesoft.org/schema/mule/http"
+ xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+ xmlns="http://www.mulesoft.org/schema/mule/core"
+ xmlns:sec="http://www.mulesoft.org/schema/mule/security"
+ xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="
+ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+ http://www.mulesoft.org/schema/mule/security http://www.mulesoft.org/schema/mule/security/current/mule-security.xsd
+ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+ <!-- HTTP Listener Config -->
+ <http:listener-config name="HTTP_Listener_config" host="${http.host}" port="${http.port}" doc:name="HTTP Listener Configuration"/>
+
+ <!-- Security: secure property placeholder (runtime will handle secure:: references) -->
+ <sec:secure-properties doc:name="Secure Properties" file="mule-properties-${env}.yaml" />
+
+ <!-- Salesforce Connector Configuration -->
+ <salesforce:config name="Salesforce_Config" doc:name="Salesforce Config"
+ username="${sf.username}"
+ password="${secure::sf.password}"
+ securityToken="${secure::sf.securityToken}"
+ clientId="${sf.clientId}"
+ clientSecret="${secure::sf.clientSecret}"
+ loginUrl="${sf.loginUrl}">
+ <salesforce:connection-pooling-profile maxActive="20" maxIdle="8" minEvictableIdleTimeMillis="60000"/>
+ <salesforce:retry-policy>
+ <reconnect-forever frequency="#[{0, 5000}]" />
+ </salesforce:retry-policy>
+ </salesforce:config>
+
+ <!-- Global error handler to ensure structured error responses -->
+ <error-handler name="Global_Error_Handler">
+ <on-error-propagate enableNotifications="true" logException="true" doc:name="Handle All Errors">
+ <logger level="ERROR" message="Global error caught: #[error.description]" />
+ <set-payload value='{"error": {"type": "#[error.errorType.class]", "description": "#[error.description]", "failure": "#[error.failureDescription default ""]"}}' mimeType="application/json" />
+ <set-variable variableName="httpStatus" value="#[(error.statusCode default 500)]" />
+ </on-error-propagate>
+ </error-handler>
+
+
+</mule>

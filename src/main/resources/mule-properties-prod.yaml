@@ -1,0 +1,18 @@
+mule:
+ http:
+ host: 0.0.0.0
+ port: 8080
+ api:
+ basePath: /api/accounts
+ env: prod
+ sf:
+ username: "prod_user@example.com"
+ password: ""
+ securityToken: ""
+ clientId: "prod_client_id"
+ clientSecret: ""
+ loginUrl: "https://login.salesforce.com"
+ scheduler:
+ cron: "0 0/15 * * * ?"
+ scheduler:
+ frequency: 900000

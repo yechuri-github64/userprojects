@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:http="http://www.mulesoft.org/schema/mule/http"
+ xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+ xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+ xmlns="http://www.mulesoft.org/schema/mule/core"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="
+ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+ <flow name="create-account-flow" errorHandler-ref="Global_Error_Handler">
+ <logger level="INFO" message="Create Account flow started" />
+ <ee:transform doc:name="Prepare Backend Payload">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/prepareCreatePayload.dwl"/>
+ </ee:message>
+ </ee:transform>
+ <salesforce:create config-ref="Salesforce_Config" type="Account" doc:name="Salesforce Create">
+ <salesforce:objects>
+ <![CDATA[#[payload]]]>
+ </salesforce:objects>
+ </salesforce:create>
+ <ee:transform doc:name="Transform Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ <set-property propertyName="http.status" value="201" />
+ </flow>
+
+ <flow name="get-account-flow" errorHandler-ref="Global_Error_Handler">
+ <logger level="INFO" message="Get Account flow started for id: #[attributes.uriParams.id]" />
+ <salesforce:query config-ref="Salesforce_Config" doc:name="Salesforce Query">
+ <salesforce:query-params>
+ <![CDATA[SELECT Id, Name, BillingCity, BillingState FROM Account WHERE Id = '#[attributes.uriParams.id]']]> 
+ </salesforce:query-params>
+ </salesforce:query>
+ <ee:transform doc:name="Transform Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ </flow>
+
+ <flow name="update-account-flow" errorHandler-ref="Global_Error_Handler">
+ <logger level="INFO" message="Update Account flow started for id: #[attributes.uriParams.id]" />
+ <ee:transform doc:name="Prepare Update Payload">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/prepareUpdatePayload.dwl"/>
+ </ee:message>
+ </ee:transform>
+ <salesforce:update config-ref="Salesforce_Config" type="Account" doc:name="Salesforce Update">
+ <salesforce:objects>
+ <![CDATA[#[payload]]]>
+ </salesforce:objects>
+ </salesforce:update>
+ <ee:transform doc:name="Transform Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ </flow>
+
+ <flow name="delete-account-flow" errorHandler-ref="Global_Error_Handler">
+ <logger level="INFO" message="Delete Account flow started for id: #[attributes.uriParams.id]" />
+ <salesforce:delete config-ref="Salesforce_Config" type="Account" doc:name="Salesforce Delete">
+ <salesforce:ids>
+ <![CDATA[#[attributes.uriParams.id]]]>
+ </salesforce:ids>
+ </salesforce:delete>
+ <set-payload value='{"result":"deleted","id":"#[attributes.uriParams.id]"}' mimeType="application/json" />
+ </flow>
+
+ <flow name="list-accounts-flow" errorHandler-ref="Global_Error_Handler">
+ <logger level="INFO" message="List Accounts flow started" />
+ <salesforce:query config-ref="Salesforce_Config" doc:name="Salesforce Query">
+ <salesforce:query-params>
+ <![CDATA[SELECT Id, Name, BillingCity, BillingState FROM Account LIMIT 100]]>
+ </salesforce:query-params>
+ </salesforce:query>
+ <ee:transform doc:name="Transform Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ </flow>
+
+ <!-- Scheduler flow to poll Salesforce periodically -->
+ <flow name="scheduled-sync-flow" errorHandler-ref="Global_Error_Handler">
+ <scheduler doc:name="Accounts Scheduler" frequency="${scheduler.frequency}" startDelay="1000" />
+ <logger level="INFO" message="Scheduled sync started" />
+ <salesforce:query config-ref="Salesforce_Config" doc:name="Salesforce Query">
+ <salesforce:query-params>
+ <![CDATA[SELECT Id, Name, LastModifiedDate FROM Account WHERE LastModifiedDate >= LAST_N_DAYS:1 LIMIT 200]]>
+ </salesforce:query-params>
+ </salesforce:query>
+ <logger level="INFO" message="Scheduled found #[sizeOf(payload)] accounts" />
+ </flow>
+
+
+</mule>

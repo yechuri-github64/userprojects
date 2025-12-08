@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit"
+ xmlns:http="http://www.mulesoft.org/schema/mule/http"
+ xmlns="http://www.mulesoft.org/schema/mule/core"
+ xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="
+ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+ <flow name="api-router">
+ <http:listener doc:name="Listener" config-ref="HTTP_Listener_config" path="${api.basePath}"/>
+ <apikit:router raml="classpath:api/accounts-salesforce-app.raml" doc:name="APIkit Router"/>
+ </flow>
+
+ <!-- APIKit generated flows mapping to implementation flows -->
+ <flow name="accounts-get">
+ <logger level="INFO" message="API: GET /accounts called" />
+ <flow-ref name="list-accounts-flow" />
+ </flow>
+
+ <flow name="accounts-post">
+ <logger level="INFO" message="API: POST /accounts called" />
+ <flow-ref name="create-account-flow" />
+ </flow>
+
+ <flow name="accounts-byId-get">
+ <logger level="INFO" message="API: GET /accounts/{id} called" />
+ <flow-ref name="get-account-flow" />
+ </flow>
+
+ <flow name="accounts-byId-put">
+ <logger level="INFO" message="API: PUT /accounts/{id} called" />
+ <flow-ref name="update-account-flow" />
+ </flow>
+
+ <flow name="accounts-byId-delete">
+ <logger level="INFO" message="API: DELETE /accounts/{id} called" />
+ <flow-ref name="delete-account-flow" />
+ </flow>
+
+
+</mule>

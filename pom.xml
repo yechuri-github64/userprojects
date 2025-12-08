@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>com.mulesoft.examples</groupId>
+ <artifactId>accounts-salesforce-app</artifactId>
+ <version>1.0.0</version>
+ <packaging>mule-application</packaging>
+ <name>accounts-salesforce-app</name>
+ <properties>
+ <mule.groupId>org.mule.runtime</mule.groupId>
+ <mule.version>4.6.0</mule.version>
+ <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ <java.version>1.8</java.version>
+ </properties>
+ <dependencies>
+ <dependency>
+ <groupId>com.mulesoft.connectors</groupId>
+ <artifactId>mule-salesforce-connector</artifactId>
+ <version>10.9.0</version>
+ <classifier>mule-plugin</classifier>
+ </dependency>
+ <dependency>
+ <groupId>com.mulesoft.muleesb.modules</groupId>
+ <artifactId>mule-apikit-module</artifactId>
+ <version>1.0.0</version>
+ <scope>provided</scope>
+ </dependency>
+ </dependencies>
+ <build>
+ <plugins>
+ <plugin>
+ <groupId>org.mule.tools.maven</groupId>
+ <artifactId>mule-maven-plugin</artifactId>
+ <version>3.3.5</version>
+ <extensions>true</extensions>
+ <configuration>
+ <classifier>mule-application</classifier>
+ <muleVersion>${mule.version}</muleVersion>
+ </configuration>
+ </plugin>
+ </plugins>
+ </build>
+</project>

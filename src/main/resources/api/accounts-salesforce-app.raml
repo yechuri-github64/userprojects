@@ -1,0 +1,73 @@
+#%RAML 1.0
+title: Accounts Salesforce API
+version: v1
+baseUri: http://{host}:{port}/api/accounts
+mediaType: application/json
+/schemas:
+
+types:
+ AccountPayload:
+ type: object
+ properties:
+ Name: string
+ BillingCity: string
+ BillingState: string
+ AccountResponse:
+ type: object
+ properties:
+ id: string
+ Name: string
+ BillingCity: string
+ BillingState: string
+
+/accounts:
+ get:
+ description: Retrieve list of accounts
+ responses:
+ 200:
+ body:
+ application/json:
+ type: AccountResponse[]
+ post:
+ description: Create a new account
+ body:
+ application/json:
+ type: AccountPayload
+ responses:
+ 201:
+ body:
+ application/json:
+ type: AccountResponse
+/accounts/{id}:
+ uriParameters:
+ id:
+ type: string
+ required: true
+ get:
+ description: Get account by id
+ responses:
+ 200:
+ body:
+ application/json:
+ type: AccountResponse
+ 404:
+ body:
+ application/json:
+ example: {"error":"not found"}
+ put:
+ description: Update an account
+ body:
+ application/json:
+ type: AccountPayload
+ responses:
+ 200:
+ body:
+ application/json:
+ type: AccountResponse
+ delete:
+ description: Delete an account
+ responses:
+ 200:
+ body:
+ application/json:
+ example: {"result":"deleted"}
