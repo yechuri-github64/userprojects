@@ -1,0 +1,16 @@
+{
+  "version": "2.0",
+  "extensions": {},
+  "logging": {
+    "applicationInsights": {
+      "sampling": {
+        "isEnabled": true
+      }
+    }
+  },
+  "version": "2.0",
+  "customHandler": {},
+  "functions": [],
+  "http": {},
+  "routePrefix": ""
+}
