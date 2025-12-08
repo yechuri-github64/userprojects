@@ -1,0 +1,14 @@
+mule:
+ env: test
+ http:
+ port: 8082
+ db:
+ host: test-db-host
+ port: 5432
+ name: testdb
+ user: testuser
+ password: "${secure::db.password}"
+ scheduler:
+ cron: "0 0/10 * * * ?"
+ splunk:
+ token: "${secure::splunk.token}"

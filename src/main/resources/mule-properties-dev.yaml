@@ -1,0 +1,14 @@
+mule:
+ env: dev
+ http:
+ port: 8081
+ db:
+ host: localhost
+ port: 5432
+ name: mydb
+ user: dbuser
+ password: "${secure::db.password}"
+ scheduler:
+ cron: "0 0/5 * * * ?"
+ splunk:
+ token: "${secure::splunk.token}"

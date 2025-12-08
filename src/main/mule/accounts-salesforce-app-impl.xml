@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:scheduler="http://www.mulesoft.org/schema/mule/scheduler" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:logger="http://www.mulesoft.org/schema/mule/logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+ http://www.mulesoft.org/schema/mule/scheduler http://www.mulesoft.org/schema/mule/scheduler/current/mule-scheduler.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/logger http://www.mulesoft.org/schema/mule/logger/current/mule-logger.xsd">
+
+ <!-- Flow to get all travelcards -->
+ <flow name="getAllTravelcardsFlow" doc:name="getAllTravelcardsFlow" processingStrategy="synchronous">
+ <try doc:name="Try">
+ <db:select doc:name="SelectAllTravelcards" config-ref="Postgres_Config">
+ <db:sql>SELECT id, travelcard_type, travelcard_valid_from, travelcard_valid_to, travelcard_name, travelcard_number, travelcard_requested_date, travelcard_transaction_reference, travelcard_usable_to FROM public.travelcards ORDER BY id</db:sql>
+ </db:select>
+ <logger:log level="INFO" message="Retrieved #[payload.size()] travelcards" />
+ <transform doc:name="TransformResponse" mule:type="dw">
+ <dw:input-payload mimeType="application/java" />
+ <dw:script>
+ <![CDATA[%dw 2.0
+output application/json
+---
+payload map ((item) -> {
+ id: item.id,
+ travelcardType: item.travelcard_type,
+ travelcardValidFrom: item.travelcard_valid_from,
+ travelcardValidTo: item.travelcard_valid_to,
+ travelcardName: item.travelcard_name default null,
+ travelcardNumber: item.travelcard_number,
+ travelcardRequestedDate: item.travelcard_requested_date,
+ travelcardTransactionReference: item.travelcard_transaction_reference,
+ travelcardUsableTo: item.travelcard_usable_to default null
+})]]>
+ </dw:script>
+ </transform>
+ <on-error-propagate>
+ <logger:log level="ERROR" message="Error fetching travelcards: #[error.description]" />
+ <set-payload value='{"error": {"type":"FetchError","description":"#[error.description]"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Flow to get travelcard by id -->
+ <flow name="getTravelcardByIdFlow" doc:name="getTravelcardByIdFlow" processingStrategy="synchronous">
+ <try>
+ <set-variable variableName="id" value="#[vars.id default (attributes.requestPath splitBy '/')[2]]" />
+ <db:select doc:name="SelectTravelcardById" config-ref="Postgres_Config">
+ <db:sql>SELECT id, travelcard_type, travelcard_valid_from, travelcard_valid_to, travelcard_name, travelcard_number, travelcard_requested_date, travelcard_transaction_reference, travelcard_usable_to FROM public.travelcards WHERE id = :id</db:sql>
+ <db:input-parameters>
+ <![CDATA[#[{id: vars.id as Number}]]]>
+ </db:input-parameters>
+ </db:select>
+ <choice>
+ <when expression="#[payload sizeOf == 0]">
+ <set-payload value='{"error": {"type":"NotFound","description":"Travelcard not found"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="404" />
+ </when>
+ <otherwise>
+ <transform doc:name="TransformResponse" mule:type="dw">
+ <dw:input-payload mimeType="application/java" />
+ <dw:script>
+ <![CDATA[%dw 2.0
+output application/json
+---
+(payload[0] mapObject ((value, key) -> null)) default
+(payload[0]) when false
+---
+---
+{ 
+ id: payload[0].id,
+ travelcardType: payload[0].travelcard_type,
+ travelcardValidFrom: payload[0].travelcard_valid_from,
+ travelcardValidTo: payload[0].travelcard_valid_to,
+ travelcardName: payload[0].travelcard_name default null,
+ travelcardNumber: payload[0].travelcard_number,
+ travelcardRequestedDate: payload[0].travelcard_requested_date,
+ travelcardTransactionReference: payload[0].travelcard_transaction_reference,
+ travelcardUsableTo: payload[0].travelcard_usable_to default null
+}]]>
+ </dw:script>
+ </transform>
+ </otherwise>
+ </choice>
+ <on-error-propagate>
+ <logger:log level="ERROR" message="Error fetching travelcard by id: #[error.description]" />
+ <set-payload value='{"error": {"type":"FetchByIdError","description":"#[error.description]"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Flow to create a travelcard -->
+ <flow name="createTravelcardFlow" doc:name="createTravelcardFlow" processingStrategy="synchronous">
+ <try>
+ <validate doc:name="ValidatePayload">
+ <payload>
+ <json-schema schema="{"type":"object"}" />
+ </payload>
+ </validate>
+ <transform doc:name="PrepareInsertPayload" mule:type="dw">
+ <dw:input-payload mimeType="application/json" />
+ <dw:script>
+ <![CDATA[%dw 2.0
+output application/java
+---
+{
+ travelcard_type: payload.travelcardType,
+ travelcard_valid_from: payload.travelcardValidFrom,
+ travelcard_valid_to: payload.travelcardValidTo,
+ travelcard_name: payload.travelcardName default null,
+ travelcard_number: payload.travelcardNumber,
+ travelcard_requested_date: payload.travelcardRequestedDate,
+ travelcard_transaction_reference: payload.travelcardTransactionReference,
+ travelcard_usable_to: payload.travelcardUsableTo default null
+}]]>
+ </dw:script>
+ </transform>
+ <db:insert doc:name="InsertTravelcard" config-ref="Postgres_Config">
+ <db:sql>INSERT INTO public.travelcards (travelcard_type, travelcard_valid_from, travelcard_valid_to, travelcard_name, travelcard_number, travelcard_requested_date, travelcard_transaction_reference, travelcard_usable_to) VALUES (:travelcard_type, :travelcard_valid_from, :travelcard_valid_to, :travelcard_name, :travelcard_number, :travelcard_requested_date, :travelcard_transaction_reference, :travelcard_usable_to) RETURNING id</db:sql>
+ <db:input-parameters>
+ <![CDATA[#[payload]]]>
+ </db:input-parameters>
+ </db:insert>
+ <set-payload value='{"result":"created","id": "#[payload[0].id]"}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="201" />
+ <on-error-propagate>
+ <logger:log level="ERROR" message="Error creating travelcard: #[error.description]" />
+ <set-payload value='{"error": {"type":"CreateError","description":"#[error.description]"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Flow to update a travelcard -->
+ <flow name="updateTravelcardFlow" doc:name="updateTravelcardFlow" processingStrategy="synchronous">
+ <try>
+ <set-variable variableName="id" value="#[vars.id default (attributes.requestPath splitBy '/')[2]]" />
+ <transform doc:name="PrepareUpdatePayload" mule:type="dw">
+ <dw:input-payload mimeType="application/json" />
+ <dw:script>
+ <![CDATA[%dw 2.0
+output application/java
+---
+{
+ id: vars.id as Number,
+ travelcard_type: payload.travelcardType default null,
+ travelcard_valid_from: payload.travelcardValidFrom default null,
+ travelcard_valid_to: payload.travelcardValidTo default null,
+ travelcard_name: payload.travelcardName default null,
+ travelcard_number: payload.travelcardNumber default null,
+ travelcard_requested_date: payload.travelcardRequestedDate default null,
+ travelcard_transaction_reference: payload.travelcardTransactionReference default null,
+ travelcard_usable_to: payload.travelcardUsableTo default null
+}]]>
+ </dw:script>
+ </transform>
+ <db:update doc:name="UpdateTravelcard" config-ref="Postgres_Config">
+ <db:sql>UPDATE public.travelcards SET travelcard_type = COALESCE(:travelcard_type, travelcard_type), travelcard_valid_from = COALESCE(:travelcard_valid_from, travelcard_valid_from), travelcard_valid_to = COALESCE(:travelcard_valid_to, travelcard_valid_to), travelcard_name = :travelcard_name, travelcard_number = COALESCE(:travelcard_number, travelcard_number), travelcard_requested_date = COALESCE(:travelcard_requested_date, travelcard_requested_date), travelcard_transaction_reference = COALESCE(:travelcard_transaction_reference, travelcard_transaction_reference), travelcard_usable_to = :travelcard_usable_to WHERE id = :id</db:sql>
+ <db:input-parameters>
+ <![CDATA[#[payload]]]>
+ </db:input-parameters>
+ </db:update>
+ <choice>
+ <when expression="#[payload.rowCount == 0]">
+ <set-payload value='{"error": {"type":"NotFound","description":"Travelcard not found"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="404" />
+ </when>
+ <otherwise>
+ <set-payload value='{"result":"updated","id": "#[vars.id]"}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="200" />
+ </otherwise>
+ </choice>
+ <on-error-propagate>
+ <logger:log level="ERROR" message="Error updating travelcard: #[error.description]" />
+ <set-payload value='{"error": {"type":"UpdateError","description":"#[error.description]"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Flow to delete a travelcard -->
+ <flow name="deleteTravelcardFlow" doc:name="deleteTravelcardFlow" processingStrategy="synchronous">
+ <try>
+ <set-variable variableName="id" value="#[vars.id default (attributes.requestPath splitBy '/')[2]]" />
+ <db:delete doc:name="DeleteTravelcard" config-ref="Postgres_Config">
+ <db:sql>DELETE FROM public.travelcards WHERE id = :id</db:sql>
+ <db:input-parameters>
+ <![CDATA[#[{id: vars.id as Number}]]]>
+ </db:input-parameters>
+ </db:delete>
+ <choice>
+ <when expression="#[payload.rowCount == 0]">
+ <set-payload value='{"error": {"type":"NotFound","description":"Travelcard not found"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="404" />
+ </when>
+ <otherwise>
+ <set-payload value='{"result":"deleted","id": "#[vars.id]"}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="200" />
+ </otherwise>
+ </choice>
+ <on-error-propagate>
+ <logger:log level="ERROR" message="Error deleting travelcard: #[error.description]" />
+ <set-payload value='{"error": {"type":"DeleteError","description":"#[error.description]"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="500" />
+ </on-error-propagate>
+ </try>
+ </flow>
+
+ <!-- Scheduler flow example - can be used to sync or cleanup -->
+ <flow name="schedulerFlow" doc:name="schedulerFlow" processingStrategy="synchronous">
+ <scheduler:scheduled-job doc:name="ScheduledJob" cronExpression="${scheduler.cron}" timezone="UTC" />
+ <logger:log level="INFO" message="Scheduler triggered: fetching count of travelcards" />
+ <db:select config-ref="Postgres_Config" doc:name="CountTravelcards">
+ <db:sql>SELECT COUNT(*) AS total FROM public.travelcards</db:sql>
+ </db:select>
+ <logger:log level="INFO" message="Total travelcards: #[payload[0].total]" />
+ </flow>
+
+
+</mule>

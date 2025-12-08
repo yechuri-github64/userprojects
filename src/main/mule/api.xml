@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:logger="http://www.mulesoft.org/schema/mule/logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+ http://www.mulesoft.org/schema/mule/logger http://www.mulesoft.org/schema/mule/logger/current/mule-logger.xsd
+ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+
+ <flow name="api-http-listener" processingStrategy="synchronous">
+ <http:listener config-ref="HTTP_Listener_config" path="/api/*" allowedMethods="GET,POST,PUT,DELETE" doc:name="HTTP Listener" />
+ <apikit:router raml="api/accounts-salesforce-app/accounts-salesforce-app.raml" doc:name="APIKit Router" />
+
+ <!-- Generic routing based on method and path extracted from attributes -->
+ <choice doc:name="Route Choice">
+ <when expression="#[attributes.method == 'GET' && attributes.requestPath == '/travelcards']">
+ <flow-ref name="getAllTravelcardsFlow" />
+ </when>
+ <when expression="#[attributes.method == 'GET' && attributes.requestPath startsWith '/travelcards/']">
+ <flow-ref name="getTravelcardByIdFlow" />
+ </when>
+ <when expression="#[attributes.method == 'POST' && attributes.requestPath == '/travelcards']">
+ <flow-ref name="createTravelcardFlow" />
+ </when>
+ <when expression="#[attributes.method == 'PUT' && attributes.requestPath startsWith '/travelcards/']">
+ <flow-ref name="updateTravelcardFlow" />
+ </when>
+ <when expression="#[attributes.method == 'DELETE' && attributes.requestPath startsWith '/travelcards/']">
+ <flow-ref name="deleteTravelcardFlow" />
+ </when>
+ <otherwise>
+ <set-payload value='{"error": {"type":"NotFound","description":"Resource not found"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="404" />
+ </otherwise>
+ </choice>
+ </flow>
+
+
+</mule>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:logger="http://www.mulesoft.org/schema/mule/logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+ http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+ http://www.mulesoft.org/schema/mule/logger http://www.mulesoft.org/schema/mule/logger/current/mule-logger.xsd">
+
+ <configuration doc:name="Configuration" />
+
+ <!-- Postgres DB Config -->
+ <db:postgresql-config name="Postgres_Config" host="${db.host}" port="${db.port}" user="${db.user}" password="${secure::db.password}" database="${db.name}" doc:name="Postgres_Config">
+ <db:connection-pooling-profile maxPoolSize="8" minPoolSize="1" maxIdle="30000" maxWait="10000" />
+ </db:postgresql-config>
+
+ <!-- HTTP Listener config used by API flows -->
+ <http:listener-config name="HTTP_Listener_config" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener configuration" >
+ <http:listener-connection host="0.0.0.0" port="${http.port}" />
+ </http:listener-config>
+
+ <!-- Global error handler -->
+ <error-handler name="GlobalErrorHandler">
+ <on-error-propagate enableNotifications="true" logException="true">
+ <logger:log level="ERROR" message="[GlobalErrorHandler] #[error.description]" />
+ <set-payload value='{"error": {"type": "#[error.errorType.name]", "description": "#[error.description]"}}' mimeType="application/json" />
+ <set-property propertyName="http.status" value="#[error.statusCode default 500]" />
+ </on-error-propagate>
+ </error-handler>
+
+
+</mule>

@@ -1,0 +1,14 @@
+mule:
+ env: prod
+ http:
+ port: 8080
+ db:
+ host: prod-db-host
+ port: 5432
+ name: proddb
+ user: produser
+ password: "${secure::db.password}"
+ scheduler:
+ cron: "0 0 * * * ?"
+ splunk:
+ token: "${secure::splunk.token}"

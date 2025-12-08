@@ -1,0 +1,80 @@
+#%RAML 1.0
+title: accounts-salesforce-app
+version: v1
+baseUri: http://{host}:{port}/api
+protocols: [ HTTP ]
+mediaType: application/json
+types:
+ TravelCard:
+ type: object
+ properties:
+ id?: integer
+ travelcardType: string
+ travelcardValidFrom: datetime
+ travelcardValidTo: datetime
+ travelcardName?: string
+ travelcardNumber: string
+ travelcardRequestedDate: datetime
+ travelcardTransactionReference: string
+ travelcardUsableTo?: datetime
+/ travelcards:
+ get:
+ description: Retrieve all travelcards
+ responses:
+ 200:
+ body:
+ application/json:
+ type: TravelCard[]
+ post:
+ description: Create a new travelcard
+ body:
+ application/json:
+ type: TravelCard
+ responses:
+ 201:
+ body:
+ application/json:
+ type: object
+ properties:
+ result: string
+ id: integer
+/ travelcards/{id}:
+ uriParameters:
+ id:
+ type: integer
+ get:
+ description: Retrieve a travelcard by id
+ responses:
+ 200:
+ body:
+ application/json:
+ type: TravelCard
+ 404:
+ body:
+ application/json:
+ type: object
+ put:
+ description: Update a travelcard
+ body:
+ application/json:
+ type: TravelCard
+ responses:
+ 200:
+ body:
+ application/json:
+ type: object
+ 404:
+ body:
+ application/json:
+ type: object
+ delete:
+ description: Delete a travelcard
+ responses:
+ 200:
+ body:
+ application/json:
+ type: object
+ 404:
+ body:
+ application/json:
+ type: object

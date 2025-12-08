@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+ <Properties>
+ <Property name="LOG_PATTERN">%d{ISO8601} [%t] %-5level %logger{36} - %msg%n</Property>
+ <Property name="SPLUNK_HEC_TOKEN">${sys:splunk.token}</Property>
+ <Property name="SPLUNK_HEC_URL">${env:SPLUNK_HEC_URL:-https://splunk.example.com:8088}</Property>
+ </Properties>
+ <Appenders>
+ <Console name="Console" target="SYSTEM_OUT">
+ <PatternLayout pattern="${LOG_PATTERN}" />
+ </Console>
+ <Http name="SplunkHEC" url="${SPLUNK_HEC_URL}/services/collector/event/1.0" method="POST">
+ <Headers>
+ <Property name="Authorization">Splunk ${SPLUNK_HEC_TOKEN}</Property>
+ <Property name="Content-Type">application/json</Property>
+ </Headers>
+ <PatternLayout pattern="%m" />
+ </Http>
+ </Appenders>
+ <Loggers>
+ <Root level="INFO">
+ <AppenderRef ref="Console" />
+ <AppenderRef ref="SplunkHEC" />
+ </Root>
+ </Loggers>
+</Configuration>
