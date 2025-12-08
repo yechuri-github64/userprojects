@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "POSTGRESQL_URL": "https://your-postgresql-api.example.com",
+    "POSTGRESQL_API_KEY": "YOUR_API_KEY"
+  }
+}
