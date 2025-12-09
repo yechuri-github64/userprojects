@@ -1,0 +1,13 @@
+{
+  "name": "salesforce-accounts-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda Node.js API for Salesforce Account CRUD using jsforce",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "jsforce": "3.10.7",
+    "dotenv": "^16.3.1"
+  }
+}
