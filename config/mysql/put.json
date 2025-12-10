@@ -1,0 +1,15 @@
+{
+  "queryparameters": {
+    "name": "Alice M. Johnson",
+    "email": "alice.m.johnson@example.com",
+    "address": "123 Main St, Springfield"
+  },
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "id": 1,
+    "name": "Alice M. Johnson",
+    "email": "alice.m.johnson@example.com",
+    "address": "123 Main St, Springfield"
+  }
+}

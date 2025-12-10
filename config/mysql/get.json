@@ -1,0 +1,11 @@
+{
+  "queryparameters": {},
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "address": "123 Main St, Springfield"
+  }
+}

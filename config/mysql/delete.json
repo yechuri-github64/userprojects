@@ -1,0 +1,9 @@
+{
+  "queryparameters": {},
+  "headerparameters": "",
+  "input": "{}",
+  "output": {
+    "success": true,
+    "deletedId": 1
+  }
+}
