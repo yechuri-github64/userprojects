@@ -1,0 +1,30 @@
+{
+  "queryparameters": [
+    {
+      "name": "Carol White",
+      "email": "carol.white@example.com",
+      "address": "789 Pine Rd, Smallville"
+    },
+    {
+      "name": "Dave Lee",
+      "email": "dave.lee@example.com",
+      "address": "101 Maple St, Gotham"
+    }
+  ],
+  "headerparameters": "",
+  "input": "{}",
+  "output": [
+    {
+      "id": 3,
+      "name": "Carol White",
+      "email": "carol.white@example.com",
+      "address": "789 Pine Rd, Smallville"
+    },
+    {
+      "id": 4,
+      "name": "Dave Lee",
+      "email": "dave.lee@example.com",
+      "address": "101 Maple St, Gotham"
+    }
+  ]
+}

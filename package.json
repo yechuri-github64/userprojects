@@ -1,0 +1,17 @@
+{
+ "name": "azure-functions-accounts-service",
+ "version": "1.0.0",
+ "description": "Azure Functions app to manage accounts using MySQL",
+ "main": "src/index.js",
+ "scripts": {
+ "start": "func start",
+ "test": "echo "No tests configured" && exit 0"
+ },
+ "dependencies": {
+ "@azure/functions": "^3.0.0",
+ "mysql2": "^3.0.0"
+ },
+ "engines": {
+ "node": ">=18"
+ }
+}
