@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "MYSQL_HOST": "",
+    "MYSQL_PORT": "3306",
+    "MYSQL_USER": "",
+    "MYSQL_PASSWORD": "",
+    "MYSQL_DATABASE": ""
+  }
+}
