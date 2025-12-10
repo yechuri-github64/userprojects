@@ -1,0 +1,30 @@
+{
+  "queryparameters": [
+    {
+      "name": "Alice",
+      "email": "alice@example.com",
+      "address": "123 Main St"
+    },
+    {
+      "name": "Bob",
+      "email": "bob@example.com",
+      "address": "456 Oak Ave"
+    }
+  ],
+  "headerparameters": "",
+  "input": "{}",
+  "output": [
+    {
+      "id": 101,
+      "name": "Alice",
+      "email": "alice@example.com",
+      "address": "123 Main St"
+    },
+    {
+      "id": 102,
+      "name": "Bob",
+      "email": "bob@example.com",
+      "address": "456 Oak Ave"
+    }
+  ]
+}
