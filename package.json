@@ -1,0 +1,10 @@
+{
+  "name": "dob-age-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda to calculate age in days, weeks, minutes, seconds from DOB",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
