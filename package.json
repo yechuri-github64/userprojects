@@ -1,0 +1,14 @@
+{
+  "name": "currency-converter-service",
+  "version": "1.0.0",
+  "description": "Simple Node.js service to convert USD amounts to INR",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
