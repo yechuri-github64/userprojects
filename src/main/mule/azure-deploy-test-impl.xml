@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:scheduler="http://www.mulesoft.org/schema/mule/scheduler" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+ http://www.mulesoft.org/schema/mule/scheduler http://www.mulesoft.org/schema/mule/scheduler/current/mule-scheduler.xsd
+ http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd">
+
+ <flow name="createAccounts">
+ <logger level="INFO" doc:name="Incoming Create Request" message="Received create accounts request: #[payload]" />
+ <ee:transform doc:name="Prepare Backend Payload">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/prepareBackendPayload.dwl"/>
+ </ee:message>
+ </ee:transform>
+ <foreach doc:name="For Each Account to Create">
+ <collection>#[payload]</collection>
+ <salesforce:create type="Account" config-ref="Salesforce_Config" doc:name="Salesforce Create">
+ <salesforce:body>
+ <![CDATA[#[payload]]]>
+ </salesforce:body>
+ </salesforce:create>
+ <logger level="INFO" doc:name="Created Account" message="Created Account Id: #[payload.id default payload]" />
+ </foreach>
+ <ee:transform doc:name="Transform Create Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ </flow>
+
+ <flow name="getAccount">
+ <logger level="INFO" doc:name="Incoming Get Request" message="Get account request: #[attributes.uriParams.id]" />
+ <salesforce:query config-ref="Salesforce_Config" doc:name="Salesforce Query">
+ <salesforce:query>
+ <![CDATA[SELECT Id, Name, Phone, Website, BillingStreet, BillingCity, BillingState, BillingPostalCode FROM Account WHERE Id = '#[attributes.uriParams.id]']]> </salesforce:query>
+ </salesforce:query>
+ <ee:transform doc:name="Transform Get Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ </flow>
+
+ <flow name="updateAccount">
+ <logger level="INFO" doc:name="Incoming Update Request" message="Update account request id: #[attributes.uriParams.id] payload: #[payload]" />
+ <ee:transform doc:name="Prepare Update Payload">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/prepareUpdatePayload.dwl"/>
+ </ee:message>
+ </ee:transform>
+ <salesforce:update type="Account" config-ref="Salesforce_Config" doc:name="Salesforce Update">
+ <salesforce:body>
+ <![CDATA[#[payload]]]>
+ </salesforce:body>
+ </salesforce:update>
+ <ee:transform doc:name="Transform Update Response">
+ <ee:message>
+ <ee:set-payload resource="classpath:dw/transformResponse.dwl"/>
+ </ee:message>
+ </ee:transform>
+ </flow>
+
+ <flow name="deleteAccount">
+ <logger level="INFO" doc:name="Incoming Delete Request" message="Delete account request id: #[attributes.uriParams.id]" />
+ <salesforce:delete type="Account" config-ref="Salesforce_Config" doc:name="Salesforce Delete">
+ <salesforce:id >
+ <![CDATA[#[attributes.uriParams.id]]]>
+ </salesforce:id>
+ </salesforce:delete>
+ <set-payload value='{"result": "deleted", "id": "#[attributes.uriParams.id]"}' mimeType="application/json" doc:name="Set Delete Response" />
+ </flow>
+
+ <!-- Scheduler flow example -->
+ <flow name="scheduledSync">
+ <scheduler:scheduled config-ref="Scheduler_Config" cron="${scheduler.cron}">
+ <logger level="INFO" doc:name="Scheduler Fired" message="Scheduler triggered sync job" />
+ <!-- Potential scheduled job to reconcile accounts - placeholder -->
+ </scheduler:scheduled>
+ </flow>
+
+ <!-- APIKit error handling mapping -->
+ <flow name="apiKitError">
+ <apikit:error-response-builder doc:name="APIKit Error Response" />
+ </flow>
+
+
+</mule>

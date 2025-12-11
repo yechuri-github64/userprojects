@@ -1,0 +1,4 @@
+{
+  "minMuleVersion": "4.6.0",
+  "secureProperties": ["sf.password", "sf.securityToken", "sf.clientSecret"],
+}

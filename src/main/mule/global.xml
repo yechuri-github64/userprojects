@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+ xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:scheduler="http://www.mulesoft.org/schema/mule/scheduler" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+ http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
+ http://www.mulesoft.org/schema/mule/scheduler http://www.mulesoft.org/schema/mule/scheduler/current/mule-scheduler.xsd">
+
+ <configuration doc:name="Mule Configuration"/>
+
+ <!-- HTTP Listener Configuration -->
+ <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config">
+ <http:listener-connection host="${mule.http.host}" port="${mule.http.port}" />
+ </http:listener-config>
+
+ <!-- Salesforce connector configuration -->
+ <salesforce:config name="Salesforce_Config" doc:name="Salesforce Config">
+ <salesforce:oauth-connection username="${sf.username}" password="${secure::sf.password}" securityToken="${secure::sf.securityToken}" clientId="${sf.clientId}" clientSecret="${secure::sf.clientSecret}" loginUrl="${sf.loginUrl}" />
+ </salesforce:config>
+
+ <!-- Scheduler Global config -->
+ <scheduler:config name="Scheduler_Config" doc:name="Scheduler Config" />
+
+ <!-- Global error handler -->
+ <error-handler name="Global_Error_Handler">
+ <on-error-propagate enableNotifications="true" logException="true" doc:name="Propagate Error">
+ <logger level="ERROR" doc:name="Log Error">[Global] Error - #[error.description] - #[error.errorType]</logger>
+ <set-payload value='{"error": {"message": "#[error.description]","type": "#[error.errorType]","detail": "#[error.getMessage() default "no detail"]"}}' doc:name="Set Error Payload" mimeType="application/json" />
+ </on-error-propagate>
+ </error-handler>
+
+
+</mule>

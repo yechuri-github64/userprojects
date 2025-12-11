@@ -1,0 +1,83 @@
+#%RAML 1.0
+title: azure-deploy-test API
+version: v1
+baseUri: http://{server}:{port}
+mediaType: application/json
+protocols: [HTTP]
+securitySchemes:
+ oauth_2_0:
+ description: OAuth 2.0
+ type: OAuth 2.0
+ describedBy:
+ headers: {}
+ responses: {}
+ settings: {}
+/account:
+ post:
+ description: Create multiple accounts
+ body:
+ application/json:
+ type: accountsCreate
+ responses:
+ 201:
+ body:
+ application/json:
+ example: |
+ { "created": [ { "id": "001..." } ] }
+ /{id}:
+ uriParameters:
+ id:
+ description: Account Id
+ type: string
+ get:
+ description: Retrieve an account by Id
+ responses:
+ 200:
+ body:
+ application/json:
+ example: |
+ { "id": "001...", "Name": "Acme" }
+ patch:
+ description: Update an account (one at a time)
+ body:
+ application/json:
+ type: accountUpdate
+ responses:
+ 200:
+ body:
+ application/json:
+ example: |
+ { "updated": { "id": "001..." } }
+ delete:
+ description: Delete an account by Id
+ responses:
+ 200:
+ body:
+ application/json:
+ example: |
+ { "result": "deleted", "id": "001..." }
+
+types:
+ Account:
+ type: object
+ properties:
+ Name: string
+ Phone: string
+ Website: string
+ BillingStreet: string
+ BillingCity: string
+ BillingState: string
+ BillingPostalCode: string
+ accountsCreate:
+ type: array
+ items: Account
+ accountUpdate:
+ type: object
+ properties:
+ Name: string
+ Phone: string
+ Website: string
+ BillingStreet: string
+ BillingCity: string
+ BillingState: string
+ BillingPostalCode: string

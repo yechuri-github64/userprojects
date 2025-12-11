@@ -1,0 +1,13 @@
+mule:
+  http:
+  host: 0.0.0.0
+  port: 8082
+  scheduler:
+  cron: "0 0/10 * * * ?"
+  sf:
+  username: ""
+  password: ""
+  securityToken: ""
+  clientId: ""
+  clientSecret: ""
+  loginUrl: "https://test.salesforce.com"
