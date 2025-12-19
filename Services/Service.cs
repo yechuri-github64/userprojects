@@ -185,7 +185,7 @@ INSERT INTO public.travelcards
 (travelcard_type, travelcard_valid_from, travelcard_valid_to, travelcard_name, travelcard_number, travelcard_requested_date, travelcard_transaction_reference, travelcard_usable_to)
 VALUES (@type, @validFrom, @validTo, @name, @number, @requested, @txRef, @usableTo)
 RETURNING id";
-            cmd.Parameters.AddWithValue("@type", NpgsqlTypes.NpgsqlDbType.Enum, req.TravelcardType);
+            cmd.Parameters.AddWithValue("@type", req.TravelcardType);
             cmd.Parameters.AddWithValue("@validFrom", req.TravelcardValidFrom);
             cmd.Parameters.AddWithValue("@validTo", req.TravelcardValidTo);
             cmd.Parameters.AddWithValue("@name", (object?)req.TravelcardName ?? DBNull.Value);
