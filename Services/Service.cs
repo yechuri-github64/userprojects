@@ -5,6 +5,8 @@ using CreatetravelcardLambda.Models.Enums;
 using Npgsql;
 using System.Globalization;
 using Amazon.Lambda.APIGatewayEvents;
+using Microsoft.Extensions.Configuration;
+
 
 namespace CreatetravelcardLambda.Services;
 
@@ -209,7 +211,7 @@ VALUES (@tid, @title, @forename, @surname, @type, @photoName, @rrs, @url, @key)"
                 cmd2.Parameters.AddWithValue("@title", ch.CardholderTitle);
                 cmd2.Parameters.AddWithValue("@forename", ch.CardholderForename);
                 cmd2.Parameters.AddWithValue("@surname", ch.CardholderSurname);
-                cmd2.Parameters.AddWithValue("@type", NpgsqlTypes.NpgsqlDbType.Enum, ch.CardholderType);
+                cmd2.Parameters.AddWithValue("@type", ch.CardholderType);
                 cmd2.Parameters.AddWithValue("@photoName", ch.CardholderPhotoName);
                 cmd2.Parameters.AddWithValue("@rrs", (object?)ch.CardholderPhotoRRSKey ?? DBNull.Value);
                 cmd2.Parameters.AddWithValue("@url", (object?)ch.CardholderPhotoURL ?? DBNull.Value);
