@@ -22,7 +22,7 @@ public class Function
     /// <summary>
     /// Lambda entry point - method must be named Createtravelcard
     /// </summary>
-    public async Task<APIGatewayProxyResponse> Createtravelcard(APIGatewayProxyRequest request, ILambdaContext context)
+    public async Task<APIGatewayProxyResponse> createtravelcard(APIGatewayProxyRequest request, ILambdaContext context)
     {
         try
         {
