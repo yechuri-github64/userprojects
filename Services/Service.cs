@@ -138,7 +138,7 @@ public class Service
 
                 if (string.IsNullOrWhiteSpace(ch.CardholderPhotoName) || ch.CardholderPhotoName.Length > 100)
                     errors.Add("cardholderPhotoName is required and must be 1-100 characters");
-                else if (!Regex.IsMatch(ch.CardholderPhotoName, "^(?!.*[×÷ˇ˘μ])[A-Za-z0-9À-ž _.\\-()\\[\]'',&+#]+$"))
+                else if (!Regex.IsMatch(ch.CardholderPhotoName, "^(?!.*[×÷ˇ˘μ])[A-Za-z0-9À-ž _.\\-()\\[\\]'',&+#]+$"))
                     errors.Add("cardholderPhotoName contains invalid characters");
 
                 // OneOf for photo keys: at least one of the three must be present
