@@ -4,6 +4,7 @@ using CreatetravelcardLambda.Models;
 using CreatetravelcardLambda.Models.Enums;
 using Npgsql;
 using System.Globalization;
+using Amazon.Lambda.APIGatewayEvents;
 
 namespace CreatetravelcardLambda.Services;
 
