@@ -1,0 +1,19 @@
+{
+  "name": "orders-management-salesforce",
+  "version": "1.0.0",
+  "description": "Order management API using Salesforce Order object",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "jsforce": "3.10.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
