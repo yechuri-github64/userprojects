@@ -26,7 +26,7 @@ namespace DemotestprojLambda
         }
 
         // Lambda handler name must be Demotestproj as requested
-        public async Task<APIGatewayProxyResponse> Demotestproj(APIGatewayProxyRequest request, ILambdaContext context)
+        public async Task<APIGatewayProxyResponse> demotestproj(APIGatewayProxyRequest request, ILambdaContext context)
         {
             Console.WriteLine("Function invoked");
 
