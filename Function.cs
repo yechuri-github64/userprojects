@@ -36,11 +36,17 @@ namespace DemotestprojLambda
                 string? clientId = null;
                 string? contentType = null;
                 string? correlationId = null;
-                request.Headers?.TryGetValue("client_id", out var clientId);
-                request.Headers?.TryGetValue("Content-Type", out var contentType);
-                request.Headers?.TryGetValue("X-Correlation-Cust-Id", out var correlationId);
+                
+                if (request.Headers != null)
+                {
+                    request.Headers.TryGetValue("client_id", out clientId);
+                    request.Headers.TryGetValue("Content-Type", out contentType);
+                    request.Headers.TryGetValue("X-Correlation-Cust-Id", out correlationId);
+                }
+                
+                Console.WriteLine(
+                    $"Headers: client_id={clientId}, Content-Type={contentType}, X-Correlation-Cust-Id={correlationId}");
 
-                Console.WriteLine($"Headers: client_id={clientId}, Content-Type={contentType}, X-Correlation-Cust-Id={correlationId}");
 
                 if (string.IsNullOrWhiteSpace(request.Body))
                 {
