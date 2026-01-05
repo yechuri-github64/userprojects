@@ -33,6 +33,9 @@ namespace DemotestprojLambda
             try
             {
                 // Extract headers
+                string? clientId = null;
+                string? contentType = null;
+                string? correlationId = null;
                 request.Headers?.TryGetValue("client_id", out var clientId);
                 request.Headers?.TryGetValue("Content-Type", out var contentType);
                 request.Headers?.TryGetValue("X-Correlation-Cust-Id", out var correlationId);
