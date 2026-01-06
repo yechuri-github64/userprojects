@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 using Npgsql;
@@ -15,7 +16,7 @@ namespace accounts_management_c_sharp.Data
  _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
  }
 
- public IDbConnection CreateConnection()
+ public DbConnection CreateConnection()
  {
  var provider = _configuration.GetValue<string>("Backend:Provider")?.ToLowerInvariant();
  if (provider == "mysql")

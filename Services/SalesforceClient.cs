@@ -14,8 +14,8 @@ namespace accounts_management_c_sharp.Services
  private readonly IHttpClientFactory _httpClientFactory;
  private readonly IConfiguration _configuration;
  private readonly ILogger<SalesforceClient> _logger;
- private string _accessToken;
- private string _instanceUrl;
+ private string? _accessToken;
+ private string? _instanceUrl;
 
  public SalesforceClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<SalesforceClient> logger)
  {
@@ -37,7 +37,7 @@ namespace accounts_management_c_sharp.Services
  var securityToken = _configuration.GetValue<string>("Salesforce:SecurityToken");
 
  var http = _httpClientFactory.CreateClient();
- var body = new StringContent($"grant_type=password&client_id={Uri.EscapeDataString(clientId)}&client_secret={Uri.EscapeDataString(clientSecret)}&username={Uri.EscapeDataString(username)}&password={Uri.EscapeDataString(password + securityToken)}", Encoding.UTF8, "application/x-www-form-urlencoded");
+ var body = new StringContent($"grant_type=password&client_id={Uri.EscapeDataString(clientId ?? string.Empty)}&client_secret={Uri.EscapeDataString(clientSecret ?? string.Empty)}&username={Uri.EscapeDataString(username ?? string.Empty)}&password={Uri.EscapeDataString((password ?? string.Empty) + (securityToken ?? string.Empty))}", Encoding.UTF8, "application/x-www-form-urlencoded");
 
  var resp = await http.PostAsync(loginUrl.TrimEnd('/') + "/services/oauth2/token", body);
  if (!resp.IsSuccessStatusCode)
