@@ -1,0 +1,4 @@
+GET /api/random?count=5&min=1&max=10&unique=true&seed=42 HTTP/1.1
+Host: localhost:7071
+x-api-key: test-key-123
+

@@ -1,0 +1,10 @@
+{
+  "numbers": [10, 7, 1, 5, 3],
+  "count": 5,
+  "metadata": {
+    "min": 1,
+    "max": 10,
+    "unique": true,
+    "seed": 42
+  }
+}
