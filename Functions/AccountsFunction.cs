@@ -28,10 +28,21 @@ namespace AccountManagerFunctionApp.Functions
  _logger = logger;
  }
 
+  [Function("Health")]
+  public HttpResponseData Health(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "health")]
+    HttpRequestData req)
+  {
+    var resp = req.CreateResponse(HttpStatusCode.OK);
+    resp.WriteString("OK");
+    return resp;
+   }
+
+
  // GET -> Implement only GET
  [Function("GetAccounts")]
  public async Task<HttpResponseData> GetAccounts(
- [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "accounts/{id?}")] HttpRequestData req,
+ [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "accounts/{id?}")] HttpRequestData req,
  string id,
  FunctionContext executionContext)
  {
